@@ -1,0 +1,54 @@
+%h1 Messages
+%p
+  =@description
+
+%form(action="#{@prefix}/messages" id="criteria")
+  Limit
+  %input(name="per_page" value="#{params[:per_page] || @conditions[:per_page]}") 
+  Order
+  %input(name="order" value="#{params[:order] || @conditions[:order]}")
+  %p
+    Filter by status
+    %select(name="status")
+      %option(value="")
+        #{"----"}
+      -@gateway.logger.statuses.each do |status|
+        <option value="#{status}"#{" selected" if status == params[:status]}>#{status}</option
+
+  %p
+    Filter by source
+    %select(name="source")
+      %option(value="")
+        #{"----"}
+      -@gateway.logger.sources.each do |source|
+        <option value="#{source}"#{" selected" if source == params[:source]}>#{source}</option
+  %input(type="submit")
+  %input(name="reply" value="Replay these messages" type="submit")
+
+%table
+  %thead
+    %tr
+      %th Date
+      %th Status
+      %th Message
+      %th From
+      %th To
+      %th Source
+  -@states.each_with_index do |state, idx|
+    %tbody
+      %tr(class="#{idx % 2 == 0 ? 'even' : 'odd'}")
+        %td
+          =state.created_at
+        %td(class="#{state.status}")
+          %a(href="#{@prefix}/messages/#{state.id}")
+            =state.status
+        %td
+          =state.body
+        %td
+          =state.from
+        %td
+          =state.to
+        %td
+          =state.source
+
+=will_paginate(@states)

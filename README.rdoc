@@ -1,0 +1,119 @@
+= Message Gateway
+
+This project aims to provide a way to receive and send SMS messages from an application. SMS aggregators use HTTP endpoints to send and receive messages. This allows you to receive messages from a variety of aggregators and to send those messages back in a synchronous or asynchronous way. It also provides logging and the ability to replay messages from an administrative console. It uses MySQL for logging and Beanstalkd for queueing.
+
+The currently supported aggregators are
+
+* CellTrust      -- http://www.celltrust.com
+* Clickatell     -- http://www.clickatell.com
+* mBlox          -- http://www.mblox.com
+* MX Telecom     -- http://www.mxtelecom.com/us
+* Opera          -- http://www.operainteractive.co.za/sms.php
+* txtNation      -- http://www.txtnation.com
+* Textmarks      -- http://www.textmarks.com
+* Unwired Appeal -- http://www.unwiredappeal.com
+
+== Message processing
+
+Receiving messages and sending replies happens over synchronous HTTP. All messages are normalized down to four fields: <tt>from</tt>, <tt>to</tt>, <tt>source</tt> and <tt>body</tt>. Optionally, there is a <tt>carrier_id</tt> for aggregators that are carrier aware.
+
+=== Synchronous processing
+
+Message Gateway supports interacting with these aggregators in an synchronous or asynchronous way. In the synchronous model, here is how a message is processed.
+
+  Aggreagator                Message Gateway              Your site                                   
+  ===========                ===============              =========
+
+  Send msg                        
+  from mobile ====\                  
+                   \===>     Normalize
+                             Message        =====\        Do something with
+                                                  \====>  the message. Respond 
+                                                          normally
+                        
+                                                   /===/
+                             Denormalize    <=====/
+                  /=====     message and 
+  Receive    <===/           reply                                      
+  response                                          
+                                             
+                                                        
+In this model, replying with non-empty body to the request from the message gateway will send the message back to the client.
+
+=== Asynchronous processing
+
+In asynchronous processing, the message comes in and uses queues for processing. Here is how it looks:
+
+  Aggreagator       Q        Message Gateway       Q      Your site                                   
+  ===========                ===============              =========
+  
+  Send msg                        
+  from mobile =====>O                                                        
+                    |                                                        
+                    |         Normalize   =============> Do something with                                 
+  Respond w/  <-----O======>  Message                    the message. Respond                                  
+  200                                              O==== normally            
+                                                   |                         
+                                                   |                         
+                             Denormalize  <========O
+  Receive     <============  message and   
+  response                   send to
+                             aggregator      
+                                                  
+In the asynchronous model, a separate sending processor has to be setup, separate from the endpoint for incoming messages. The currently supported asynchronous senders are:
+
+* CellTrust      -- http://www.celltrust.com
+* Clickatell     -- http://www.clickatell.com
+* mBlox          -- http://www.mblox.com
+* MX Telecom     -- http://www.mxtelecom.com/us
+* Opera          -- http://www.operainteractive.co.za/sms.php
+* txtNation      -- http://www.txtnation.com
+* Unwired Appeal -- http://www.unwiredappeal.com
+
+As well, there is another means of sending, SMTP. Many carrier support (as well, all major US carriers) sending messages by email. You can specify SMTP as a message source provided you configure it with a valid SMTP server.
+
+== Admin interface
+
+You can configure an admin interface which will give you a high level view of messages processed, and the success or failure of every message. If a message fails, you can attempt to replay it (either to the aggregator or to your site). As well, you can simulate a message from this panel.
+
+== Configuration
+
+Configuration right now takes place in a rackup file. Here is an example configuration file with annotation explaining what everything does:
+
+  require 'message_gateway'
+  
+  gateway = MessageGateway.new('my gateway', "http://127.0.0.1:3000/interpret") # This takes a name for display purposes and an endpoint to send messages to.
+  gateway.beanstalk('127.0.0.1') # This sets the beanstalk host (and port) for use as a queue
+  gateway.logger = MessageGateway::Logger.new(:adapter => "mysql", :host => "127.0.0.1", :database => "message_gateway", :username => "root", :password => "")
+  # this configures mysql for use as a logger.
+  
+  gateway.outbound(:unwired_appeal, '99999') { |out|   # This configures an outbound message sender. The first parameter is the adapter to use
+    out.default_from = '99999'                         # and the second parameter is an identifier used to identify it.
+    out.event_id     = "1111"                          # Every aggregator has its own configuration parameters. See the rdocs for 
+    out.password     = "12345678"                      # each adapter for all its options.
+  }
+  
+  end_point = gateway.sms_sending_endpoint             # This creates a sending endpoint for initiating sms messages
+  end_point.default_source = '99999'                   # without having to receive one first.
+  
+  run HttpRouter.new {                                 # This creates your endpoints:
+    add('admin*').to gateway.admin                     # For the admin interface
+    post('send').to end_point                          # For the sending interface
+  
+    add('sms/incoming.sms').to gateway.inbound(:sync,  '99999').parser(:unwired_appeal) # this creates a receiving endpoint
+  }                                                                                     # The endpoint using the synchronous processing model and the 
+                                                                                        # unwired appeal parser.
+
+Once you've configured this, you can use thin to run the subsequent rackup file.
+
+== Sending messages
+
+Once you've set up an SMS sending endpoint, you can send messages to it. Simply post data with the following fields:
+
+* to -- The number you're sending to
+* body -- The contents of the message
+* source -- The identifier of the outbound processor to use. This is the name you've assigned the source when you set it up. (This is optional, you can configure a default source)
+
+== Current limitations
+
+There are some limitations. For one, using a rackup file is a bit awkward for configuration. For another, there is no way to try several aggregators to see which can send a message. As well, there is currently no support for delivery receipts.

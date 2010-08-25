@@ -1,0 +1,15 @@
+%h1 Dashboard
+
+%h2 MO
+%div#mo_graph(style="width:800px;height:600px;")
+
+%h2 MT
+%div#mt_graph(style="width:800px;height:600px;")
+
+:javascript
+  $(function () {
+    data = #{@mo_graph_data.map {|set| i=0; {:data => set.last.map{|s| [i+=1, s]}, :label => set.first }}.to_json};
+    $.plot($("#mo_graph"), data);
+    data = #{@mt_graph_data.map {|set| i=0; {:data => set.last.map{|s| [i+=1, s]}, :label => set.first }}.to_json};
+    $.plot($("#mt_graph"), data);
+  });
