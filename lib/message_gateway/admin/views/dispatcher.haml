@@ -1,0 +1,41 @@
+%h1
+  ="Dispatcher #{@dispatcher.out.name.capitalize}"
+
+%p
+  Jobs waiting to be processed: <strong>#{@dispatcher.waiting_jobs}</strong>
+  
+%p
+  Dispatching with <strong>#{@dispatcher.out.class}</strong> which reports it's successfully processed <span style="background-color:green">#{@dispatcher.success_count}</span> messages and unsuccessfully processed <span style="background-color:red">#{@dispatcher.success_count}</span> messages.
+
+%h2
+  Last 30 events
+%p
+  -if @events.empty?
+    %em
+      There are no events for this processor
+  -else
+    %table
+      %tr
+        %th
+          Processed at
+        %th
+          Status
+        %th
+          From
+        %th
+          To
+        %th
+          Body
+      -@events.each do |event|
+        %tr
+          %td
+            =event.created_at
+          %td(class="#{event.status}")
+            =event.status
+          %td
+            =event.state.from
+          %td
+            =event.state.to
+          %td
+            =event.state.body
+

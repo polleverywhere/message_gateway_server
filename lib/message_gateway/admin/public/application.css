@@ -1,0 +1,61 @@
+* {
+  font-family: Arial, "sans-serif";
+}
+
+body {
+  background-color: gray;
+}
+
+table {
+  border: black 1px solid;
+}
+
+#navbar {
+  float: left;
+  margin-right: 1em;
+}
+
+#contents {
+  float: left;
+  width: 70%;
+  background-color: white;
+  padding: 1em;
+}
+
+.mo_permanent_failure {
+  background-color: red;
+}
+
+.mo_failure {
+  background-color: yellow;
+}
+
+.mo_start {
+  background-color: gray;
+}
+
+.mo_success {
+  background-color: green;
+}
+
+.traffic_light {
+  font-size: 150%;
+}
+
+.traffic_light.green {
+  color: green;
+}
+
+.traffic_light.yellow {
+  color: yellow;
+}
+
+.traffic_light.red {
+  color: red;
+  text-decoration: blink;
+}
+
+.event_error {
+  background-color: #dddddd;
+  color: #330000;
+}

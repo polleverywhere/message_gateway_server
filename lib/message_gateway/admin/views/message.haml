@@ -1,0 +1,42 @@
+%h1
+  Message - #{@state.id}
+  
+%dl
+  %dt Status
+  %dd #{@state.status}
+  %dt From
+  %dd #{@state.from}
+  %dt To
+  %dd #{@state.to}
+  %dt Body
+  %dd #{@state.body}
+  %dt Source
+  %dd
+    %a(href="#{@prefix}/messages?source=#{Rack::Utils.escape(@state.source)}") #{@state.source}
+  -if @state.replied_from
+    %dt In Reply To
+    %dd
+      %a(href="#{@prefix}/messages/#{@state.replied_from.id}") Message #{@state.replied_from.id}
+  -if @state.reply
+    %dt Replied from
+    %dd
+      %a(href="#{@prefix}/messages/#{@state.reply.id}") Message #{@state.reply.id}
+
+%h2
+  Events
+  %table
+    %tr
+      %th
+        Processed at
+      %th
+        Status
+    -@state.events.each do |event|
+      %tr
+        %td
+          =event.created_at
+        %td(class="#{event.status}")
+          =event.status
+      -if event.error
+        %tr
+          %td(colspan="2" class="event_error")
+            =event.error

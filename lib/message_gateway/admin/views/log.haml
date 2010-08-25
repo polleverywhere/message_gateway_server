@@ -1,0 +1,23 @@
+%h1 Log
+%table
+  %thead
+    %tr
+      %th Status
+      %th Message
+      %th From
+      %th To
+      %th Source
+  -@states.each_with_index do |state, idx|
+    %tbody
+      %tr(class="#{idx % 2 == 0 ? 'even' : 'odd'}")
+        
+        %td(class="#{state.status}")
+          =state.status
+        %td
+          =state.body
+        %td
+          =state.from
+        %td
+          =state.to
+        %td
+          =state.source

@@ -1,0 +1,57 @@
+%h1
+  ="Processor #{@processor.name.capitalize}"
+
+%p
+  Jobs waiting to be processed: <strong>#{@processor.waiting_jobs}</strong>
+  
+-if @processor.parser_instance
+  %p
+    Parsing with <strong>#{@processor.parser_instance.class}</strong> which reports it's successfully processed <span style="background-color:green">#{@processor.parser_instance.success_count}</span> messages and unsuccessfully processed <span style="background-color:red">#{@processor.parser_instance.failure_count}</span> messages.
+-else
+  %p
+    This processor has no parser.
+
+%h2
+  Last 30 events
+%p
+  -if @events.empty?
+    %em
+      There are no events for this processor
+  -else
+    %table
+      %tr
+        %th
+          Processed at
+        %th
+          Status
+        %th
+          From
+        %th
+          To
+        %th
+          Body
+      -@events.each do |event|
+        %tr
+          %td
+            =event.created_at
+          %td(class="#{event.status}")
+            =event.status
+          %td
+            =event.state.from
+          %td
+            =event.state.to
+          %td
+            =event.state.body
+
+%h2 Simulate
+%form(action="#{@prefix}/processor/#{@processor.name}/simulate" method="post")
+  %fieldset
+    From
+    %input(name="from" type="text")
+  %fieldset
+    To
+    %input(name="to" type="text")
+  %fieldset
+    Body
+    %input(name="body" type="text")
+  %input(type="submit")

@@ -1,0 +1,40 @@
+%html
+  %head
+    %link(rel="StyleSheet" href="#{@prefix}/application.css" type="text/css" media="screen")
+    %script(type="text/javascript" src="#{@prefix}/jquery-1.4.2.min.js")
+    %script(type="text/javascript" src="#{@prefix}/jquery.flot.min.js")
+    %title Message Gateway - #{@gateway.started_at} - #{Process.pid}
+  %body
+    %div#navbar
+      MessageGateway #{MessageGateway::VERSION}
+      %br
+      %span(style="font-size: 50%")
+        =@gateway.started_at
+      %ul
+        %li
+          %a(href="#{@prefix}/dashboard") Dashboard
+        %li
+          %a(href="#{@prefix}/log") Log
+        %li
+          %a(href="#{@prefix}/messages") Messages
+        %li
+          Inbound processors
+          %br
+          -@gateway.processors.each do |name, processor|
+            <span class="traffic_light #{processor.traffic_light_status}">&bull;</span>
+            %a(href="#{@prefix}/processor/#{name}")
+              =name 
+            %br
+          %li
+            Outbound processors
+            %br
+            -@gateway.dispatchers.each do |name, dispatcher|
+              <span class="traffic_light #{dispatcher.traffic_light_status}">&bull;</span>
+              %a(href="#{@prefix}/dispatcher/#{name}")
+                =name 
+              %br
+    %div#contents
+      -if @notice
+        %div.notice
+          =@notice
+      = yield
