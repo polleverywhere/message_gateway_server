@@ -19,9 +19,11 @@ def start_processor(port = 3456)
 end
 
 def start_backend(port = 8999, &blk)
-  Thin::Server.new('0.0.0.0', port) do
+  server = Thin::Server.new('0.0.0.0', port) do
     run blk
-  end.start
+  end
+  server.start!
+  server
 end
 
 def test_processor(&blk)
