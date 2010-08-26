@@ -75,6 +75,7 @@ class MessageGateway
   end
 
   def inbound(type, name, *args)
+    raise("inbound #{name} already exists") if @processors.key?(name)
     processor = self.class.const_get(:Processor).const_get(make_const(type)).new(*args)
     processor.gateway = self
     processor.name = name
@@ -115,6 +116,7 @@ class MessageGateway
   end
 
   def add_outbound(out)
+    raise("outbound #{out.name} already exists") if @dispatchers.key?(out.name)
     dispatcher = AsyncDispatcher.new(tube_for_name(out.name, 'outbound'), out)
     dispatcher.gateway = self
     @dispatchers[out.name] = dispatcher
