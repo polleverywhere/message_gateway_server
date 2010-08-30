@@ -45,7 +45,7 @@ class MessageGateway
               elsif gateway.dispatchers[name]
                 gateway.dispatchers[name].inject(reply_message)
               else
-                lot_mt_permanent_failure(reply_message)
+                log_mt_permanent_failure(reply_message)
               end
             else
               log_mo_failure(message, "#{http.response_header.status}\n#{http.response}")
