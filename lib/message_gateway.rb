@@ -39,8 +39,8 @@ class MessageGateway
   autoload :SmsSendingEndpoint, 'message_gateway/sms_sending_endpoint'
   autoload :Util,               'message_gateway/util'
 
-  attr_reader :backend_endpoint, :name, :beanstalk_host, :dispatchers, :processors, :started_at, :log
-  attr_accessor :logger
+  attr_reader :name, :beanstalk_host, :dispatchers, :processors, :started_at, :log
+  attr_accessor :logger, :backend_endpoint
 
   @@default_logger = nil
 
@@ -75,6 +75,7 @@ class MessageGateway
   end
 
   def inbound(type, name, *args)
+    raise("inbound #{name} already exists") if @processors.key?(name)
     processor = self.class.const_get(:Processor).const_get(make_const(type)).new(*args)
     processor.gateway = self
     processor.name = name
@@ -92,7 +93,6 @@ class MessageGateway
 
   def replay_mt(msg)
     if @dispatchers[msg.source]
-      puts "REPLAY_MT #{msg.inspect}"
       @dispatchers[msg.source].inject(msg) 
     end
   end
@@ -100,7 +100,6 @@ class MessageGateway
   def replay_mo(msg)
     if @processors[msg.source]
       @processors[msg.source].process(msg)
-      puts "REPLAY_MO #{msg.inspect}"
     end
   end
 
@@ -117,6 +116,7 @@ class MessageGateway
   end
 
   def add_outbound(out)
+    raise("outbound #{out.name} already exists") if @dispatchers.key?(out.name)
     dispatcher = AsyncDispatcher.new(tube_for_name(out.name, 'outbound'), out)
     dispatcher.gateway = self
     @dispatchers[out.name] = dispatcher

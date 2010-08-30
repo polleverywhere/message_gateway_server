@@ -13,7 +13,9 @@ class MessageGateway
       def to_message
         data = {'body' => body, 'to' => to, 'from' => from, 'source' => source}
         data.merge!(JSON.parse(extra)) if extra
-        MessageGateway::Message.from_hash(data)
+        message = MessageGateway::Message.from_hash(data)
+        message.id = id
+        message
       end
 
       def mt?

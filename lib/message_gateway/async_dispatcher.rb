@@ -40,11 +40,11 @@ class MessageGateway
     end
     
     def inject(message)
-      EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => @tube).put({'message' => message.to_hash}.to_json)
+      EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name).put({'message' => message.to_hash}.to_json)
     end
     
     def inject_with_delay(message, delay)
-      EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => @tube).put({'message' => message.to_hash}.to_json, :delay => delay)
+      EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name).put({'message' => message.to_hash}.to_json, :delay => delay)
     end
     
     def process

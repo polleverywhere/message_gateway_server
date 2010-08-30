@@ -34,13 +34,19 @@ class MessageGateway
               log_mo_success(message)
               report_success
               response_text = http.response.strip
-              if !response_text.empty?
-                reply_message = message.reply(response_text)
-                log_mt_start(reply_message)
-                log_mt_success(reply_message)
-                response << response_text
+              reply_message = message.reply(response_text)
+              if response
+                if !response_text.empty?
+                  log_mt_start(reply_message)
+                  log_mt_success(reply_message)
+                  response << response_text
+                end
+                response.done
+              elsif gateway.dispatchers[name]
+                gateway.dispatchers[name].inject(reply_message)
+              else
+                lot_mt_permanent_failure(reply_message)
               end
-              response.done
             else
               log_mo_failure(message, "#{http.response_header.status}\n#{http.response}")
               process(message, response, count + 1)

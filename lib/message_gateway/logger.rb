@@ -25,7 +25,6 @@ class MessageGateway
     def soft_reset!
       ActiveRecord::Base.connection.execute "truncate events"
       ActiveRecord::Base.connection.execute "truncate states"
-      ActiveRecord::Base.connection.execute "truncate error_messages"
     end
 
     def reset!(force = false)
@@ -35,7 +34,7 @@ class MessageGateway
           t.text :error, :null => true
           t.string :status, :limit => 30, :null => false
           t.datetime :created_at
-          t.add_index :hash
+          t.add_index :state_id
         end
 
         create_table :states, :force => force do |t|
