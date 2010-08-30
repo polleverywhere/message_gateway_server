@@ -117,3 +117,7 @@ Once you've set up an SMS sending endpoint, you can send messages to it. Simply 
 == Current limitations
 
 There are some limitations. For one, using a rackup file is a bit awkward for configuration. For another, there is no way to try several aggregators to see which can send a message. As well, there is currently no support for delivery receipts.
+
+== License
+
+This software is distributed under GNU General Public License (http://www.gnu.org/licenses/gpl.html).
