@@ -22,6 +22,7 @@ class MessageGateway
           else
             response.status = 500
             response << 'ERROR'
+            response.done
           end
         end
         response.finish
