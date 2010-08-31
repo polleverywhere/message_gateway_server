@@ -39,6 +39,7 @@ class MessageGateway
     
     def build_and_dispatch(from, to, body)
       if from.empty? || to.empty? || body.empty?
+        log.error "Unable to build and dispatch message: #{from.inspect} #{to.inspect} #{body.inspect} #{carrier_id.inspect}"
         report_failure
         nil
       else
@@ -48,7 +49,7 @@ class MessageGateway
         message
       end
     rescue
-      puts "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+      log.error "#{$!.message}\n#{$!.backtrace.join("\n")}"
     end
   end
 end

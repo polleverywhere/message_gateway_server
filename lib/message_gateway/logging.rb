@@ -2,6 +2,10 @@ class MessageGateway
   module Logging
     attr_accessor :gateway
     
+    def log
+      gateway.log
+    end
+    
     def log_mo_start(message)
       gateway.logger.record_status(message, :mo_start)
     end

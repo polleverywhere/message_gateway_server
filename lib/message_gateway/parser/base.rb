@@ -4,7 +4,6 @@ class MessageGateway
       include Parser
       attr_accessor :default_to
       def initialize(&blk)
-        puts "yoooo"
         yield self if blk
       end
     end

@@ -90,7 +90,6 @@ class MessageGateway
         
         if params[:reply]
           @states.each do |state|
-            puts "STATE #{state.inspect} MT #{state.mt?.inspect} MO #{state.mo?.inspect}"
             if state.mt?
               @gateway.replay_mt(state.to_message)
             elsif state.mo?

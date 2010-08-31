@@ -14,12 +14,9 @@ class MessageGateway
     def call(env)
       req = Rack::Request.new(env)
       
-      puts "got env #{req.params.inspect}"
-      
       req['source'] ||= @default_source
 
       unless source = @gateway.dispatchers[req['source']]
-        puts "no source"
         return Rack::Response.new(["The source '#{req['source']}' could not be recognized. Sound must be one of the following:\n#{@gateway.dispatchers.keys.join("\n")}"], 400).finish
       end
 
@@ -28,7 +25,6 @@ class MessageGateway
       # parameter checking
       %w(source body to).each do |p|
         if !req.params.key?(p)
-          puts "missing #{p}"
           return Rack::Response.new(["The parameter '#{p}' must be supplied."], 400).finish
         end
       end
@@ -44,7 +40,6 @@ class MessageGateway
           data = {'from' => sanitize_phone_number(req['from']), 'to' => sanitize_phone_number(req['to']), 'source' => req['source']}
           data['carrier_id'] = req['carrier_id'] if req['carrier_id']
           if data['from'].empty?
-            puts "no from"
             Rack::Response.new(["The parameter 'from' must be supplied."], 400).finish
           else
             bodies = begin
@@ -52,8 +47,6 @@ class MessageGateway
             rescue JSON::ParserError
               [req['body']]
             end
-          
-            puts "putting jobs on queue"
           
             bodies.each_with_index { |body, index| source.inject_with_delay(Message.from_hash(data.merge('body' => body)), index * message_delay) }
             Rack::Response.new(['OK'], 200).finish
