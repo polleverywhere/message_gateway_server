@@ -1,6 +1,7 @@
 class MessageGateway
   module Parser
     include PhoneNumber
+    include Logging
 
     autoload :Base,          'message_gateway/parser/base'
     autoload :CarrierAware,  'message_gateway/parser/carrier_aware'
@@ -18,6 +19,10 @@ class MessageGateway
     autoload :UnwiredAppeal, 'message_gateway/parser/unwired_appeal'
 
     attr_accessor :processor
+
+    def gateway
+      processor.gateway
+    end
 
     def report_success
       @success_count ||= 0
