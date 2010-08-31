@@ -19,7 +19,7 @@ class MessageGateway
         process(message, response)
         response.finish
       end
-      
+
       def process(message, response = nil, count = 0)
         if count >= MAX_ERRORS
           log_mo_permanent_failure(message)
