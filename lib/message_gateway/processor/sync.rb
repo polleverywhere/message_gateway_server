@@ -15,8 +15,15 @@ class MessageGateway
       def call(env)
         response = Thin::AsyncResponse.new(env)
         response.status = 200
-        message = @parser_instance.call(env)
-        process(message, response)
+        EM.next_tick do
+          message = @parser_instance.call(env)
+          if message
+            process(message, response)
+          else
+            response.status = 500
+            response << 'ERROR'
+          end
+        end
         response.finish
       end
 
