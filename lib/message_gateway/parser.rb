@@ -1,9 +1,13 @@
 class MessageGateway
   module Parser
+    include PhoneNumber
+
+    autoload :Base,          'message_gateway/parser/base'
     autoload :CarrierAware,  'message_gateway/parser/carrier_aware'
-                             
     autoload :Simple,        'message_gateway/parser/simple'
     autoload :SimpleCarrier, 'message_gateway/parser/simple_carrier'
+
+    # impls
     autoload :Celltrust,     'message_gateway/parser/celltrust'
     autoload :Clickatell,    'message_gateway/parser/clickatell'
     autoload :Mblox,         'message_gateway/parser/mblox'
@@ -14,6 +18,7 @@ class MessageGateway
     autoload :UnwiredAppeal, 'message_gateway/parser/unwired_appeal'
 
     attr_accessor :processor
+
     def report_success
       @success_count ||= 0
       @success_count += 1

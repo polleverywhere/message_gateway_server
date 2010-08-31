@@ -2,10 +2,7 @@ require 'nokogiri'
 
 class MessageGateway
   module Parser
-    class Celltrust
-      include Parser
-      include PhoneNumber
-
+    class Celltrust < Base
       def call(env)
         request = Rack::Request.new(env)
         doc = Nokogiri::XML.parse(request.params['xml'])

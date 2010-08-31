@@ -2,9 +2,7 @@ require 'nokogiri'
 
 class MessageGateway
   module Parser
-    class Clickatell
-      include Parser
-      include PhoneNumber
+    class Clickatell < Base
 
       def call(env)
         request = Rack::Request.new(env)

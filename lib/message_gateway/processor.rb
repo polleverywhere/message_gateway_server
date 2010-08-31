@@ -29,12 +29,12 @@ class MessageGateway
       cls.new(from, to, body, name, nil)
     end
     
-    def parser(p)
+    def parser(p, *args, &blk)
       if p.respond_to?(:call)
         @parser_instance = p
         @parser_instance.processor = self
       else
-        parser(MessageGateway.const_get(:Parser).const_get(gateway.make_const(p)).new)
+        parser(MessageGateway.const_get(:Parser).const_get(gateway.make_const(p)).new(*args, &blk))
       end
       self
     end

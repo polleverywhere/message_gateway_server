@@ -2,9 +2,7 @@ require 'nokogiri'
 
 class MessageGateway
   module Parser
-    class Mblox
-      include Parser
-      include PhoneNumber
+    class Mblox < Base
       include CarrierAware
       include Util::Carrier
 
