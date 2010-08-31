@@ -1,8 +1,6 @@
 class MessageGateway
   module Parser
     class Simple < Base
-      attr_accessor :default_to
-
       def from_value(req)
         req.params['sender']
       end
