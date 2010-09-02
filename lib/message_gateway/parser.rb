@@ -10,6 +10,7 @@ class MessageGateway
 
     # impls
     autoload :Celltrust,     'message_gateway/parser/celltrust'
+    autoload :CelltrustHttp, 'message_gateway/parser/celltrust_http'
     autoload :Clickatell,    'message_gateway/parser/clickatell'
     autoload :Mblox,         'message_gateway/parser/mblox'
     autoload :MxTelecom,     'message_gateway/parser/mx_telecom'

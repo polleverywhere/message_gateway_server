@@ -8,8 +8,8 @@ describe MessageGateway::Parser::Clickatell do
 <clickmo> 
     <api_id>xxx</api_id> 
     <moMsgId>121910921</moMsgId> 
-    <from>41411</from> 
-    <to>1234561234</to> 
+    <from>1234561234</from> 
+    <to>41411</to> 
     <timestamp>#{Time.now}</timestamp> 
     <text>This is a message</text> 
     <charset>ISO-8859-1</charset>
@@ -22,12 +22,12 @@ describe MessageGateway::Parser::Clickatell do
       @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:data => text}))
     end
     
-    it "should have a 'from' of '41411'" do
-      @message.from.should == '41411'
+    it "should have a 'from' of '1234561234'" do
+      @message.from.should == '1234561234'
     end
 
-    it "should have a 'to' of '1234561234'" do
-      @message.to.should == '1234561234'
+    it "should have a 'to' of '41411'" do
+      @message.to.should == '41411'
     end
 
     it "should have a 'body' of 'This is a message'" do

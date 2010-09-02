@@ -13,8 +13,8 @@ describe MessageGateway::Parser::Celltrust do
     <Carrier>cingular</Carrier>
     <NetworkType>gsm</NetworkType>
     <ResponseType>NORMAL</ResponseType>
-    <OriginatorAddress>41411</OriginatorAddress>
-    <ServerAddress>123-456-1234</ServerAddress>
+    <OriginatorAddress>123-456-1234</OriginatorAddress>
+    <ServerAddress>41411</ServerAddress>
     <AcceptedTime>
       <DateTime>
         <DateFormat>dd/MMM/yyyy HH:mm:ss</DateFormat>
@@ -29,12 +29,12 @@ describe MessageGateway::Parser::Celltrust do
       @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:xml => text}))
     end
     
-    it "should have a 'from' of '41411'" do
-      @message.from.should == '41411'
+    it "should have a 'from' of '1234561234'" do
+      @message.from.should == '1234561234'
     end
 
-    it "should have a 'to' of '1234561234'" do
-      @message.to.should == '1234561234'
+    it "should have a 'to' of '41411'" do
+      @message.to.should == '41411'
     end
 
     it "should have a 'body' of 'This is a message'" do
@@ -43,6 +43,10 @@ describe MessageGateway::Parser::Celltrust do
 
     it "should have a 'source' of 'celltrust'" do
       @message.source.should == 'celltrust'
+    end
+
+    it "should have a 'carrier' of :cingular" do
+      @message.carrier_id.should == :att_mobility
     end
   end
 end

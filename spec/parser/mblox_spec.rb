@@ -14,11 +14,11 @@ describe MessageGateway::Parser::Mblox do
   <ResponseList>
     <Response SequenceNumber="1" Type="SMS" Format="Text">
       <TransactionID>215980</TransactionID>
-      <OriginatingNumber>41411</OriginatingNumber>
+      <OriginatingNumber>1234561234</OriginatingNumber>
       <Time>200412181427</Time>
       <Data>This is a message</Data>
       <Deliverer>31006</Deliverer>
-      <Destination>1234561234</Destination>
+      <Destination>41411</Destination>
       <Operator>99999</Operator>
       <Tariff>150</Tariff>
       <SessionId>SessionID</SessionId>
@@ -36,12 +36,12 @@ describe MessageGateway::Parser::Mblox do
       @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:xmldata => text}))
     end
     
-    it "should have a 'from' of '41411'" do
-      @message.from.should == '41411'
+    it "should have a 'from' of '1234561234'" do
+      @message.from.should == '1234561234'
     end
 
-    it "should have a 'to' of '1234561234'" do
-      @message.to.should == '1234561234'
+    it "should have a 'to' of '41411'" do
+      @message.to.should == '41411'
     end
 
     it "should have a 'body' of 'This is a message'" do
