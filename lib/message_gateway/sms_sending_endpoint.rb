@@ -17,7 +17,7 @@ class MessageGateway
       req['source'] ||= @default_source
 
       unless source = @gateway.dispatchers[req['source']]
-        return Rack::Response.new(["The source '#{req['source']}' could not be recognized. Sound must be one of the following:\n#{@gateway.dispatchers.keys.join("\n")}"], 400).finish
+        return Rack::Response.new(["The source '#{req['source']}' could not be recognized. Source must be one of the following:\n#{@gateway.dispatchers.keys.join("\n")}"], 400).finish
       end
 
       req['from'] ||= source.out.default_from
