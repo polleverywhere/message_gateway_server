@@ -63,10 +63,12 @@ class MessageGateway
                 process
               }
             end
-            send.errback {
+            send.errback { |err|
+              gateway.log.error err
               retry_job(job, parsed_job, message)
             }
           rescue
+            gateway.log.error "#{$!.message}\n#{$!.backtrace.join("\n")}"
             retry_job(job, parsed_job, message)
           end
         rescue Message::BadParameter

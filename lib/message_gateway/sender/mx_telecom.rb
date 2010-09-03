@@ -31,7 +31,7 @@ class MessageGateway
         raise "user must be set or derived from add_login"      unless username
         raise "password must be set or derived from add_login"  unless password
 
-        defer_success_on_200(EM::HttpRequest.new(END_POINT_URL).get :query => {'user' => username, 'pass' => password, 'smsfrom' => @shortcode, 'carrier' => message.carrier ? denormalize_carrier(message.carrier) : '', 'smsto' => message.to, 'smsmsg' => message.body, 'split' => @split, 'flash' => @flash, 'report' => @report})
+        defer_success_on_200(EM::HttpRequest.new(END_POINT_URL).get :query => {'user' => username, 'pass' => password, 'smsfrom' => @shortcode, 'carrier' => message.respond_to?(:carrier) && message.carrier ? denormalize_carrier(message.carrier) : '', 'smsto' => message.to, 'smsmsg' => message.body, 'split' => @split, 'flash' => @flash, 'report' => @report})
       end
     end
   end

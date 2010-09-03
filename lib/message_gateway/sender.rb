@@ -48,16 +48,8 @@ class MessageGateway
     
     def defer(http, &blk)
       d = EM::DefaultDeferrable.new
-      http.callback do
-        if http.response_header.status == 200
-          blk.call ? d.succeed : d.fail
-        else
-          d.fail("#{http.response_header.status}\n#{http.response}")
-        end
-      end
-      http.errback do |err|
-        d.fail(err)
-      end
+      http.callback { blk.call ? d.succeed : d.fail("#{http.response_header.status}\n#{http.response}") }
+      http.errback  { |err| d.fail(err) }
       d
     end
     
