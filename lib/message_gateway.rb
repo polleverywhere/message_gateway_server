@@ -13,16 +13,16 @@ require 'message_gateway/version'
 
 WillPaginate.enable_activerecord
 
-module ActiveRecord
-  module ConnectionAdapters
-    module QueryCache
-      private
-      def cache_sql(sql)
-        yield
-      end
-    end
-  end
-end
+#module ActiveRecord
+#  module ConnectionAdapters
+#    module QueryCache
+#      private
+#      def cache_sql(sql)
+#        yield
+#      end
+#    end
+#  end
+#end
 
 class MessageGateway
   autoload :Admin,              'message_gateway/admin'

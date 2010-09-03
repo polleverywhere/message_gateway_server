@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'dirge'
+require 'nokogiri'
 
 describe MessageGateway::Sender::Mblox do
   before(:each) do
@@ -32,6 +33,9 @@ describe MessageGateway::Sender::Mblox do
   end
   
   it "should build a message" do
-    @sender.build(MessageGateway::Message.new('from', 'to', "body", 'mblox')).should == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<NotificationRequest Version=\"3.5\">\n <NotificationHeader>\n  <PartnerName>username</PartnerName>\n  <PartnerPassword>password</PartnerPassword>\n </NotificationHeader>\n <NotificationList BatchID=\"9999999\">\n  <Notification SequenceNumber=\"1\" MessageType=\"SMS\">\n   <Message>body</Message>\n   <Profile>profile_id</Profile>\n   <SenderId Type=\"Shortcode\">from</SenderId>\n   <Subscriber>\n    <SubscriberNumber></SubscriberNumber>\n   </Subscriber>\n  </Notification>\n </NotificationList>\n</NotificationRequest>\n"
+    doc = Nokogiri::XML(@sender.build(MessageGateway::Message.new('41414', '12121234123', "body", 'mblox')))
+    doc.xpath('//NotificationRequest/NotificationList/Notification/Message').inner_text.should == 'body'
+    doc.xpath('//NotificationRequest/NotificationList/Notification/SenderId').inner_text.should == '41414'
+    doc.xpath('//NotificationRequest/NotificationList/Notification/Subscriber/SubscriberNumber').inner_text.should == '12121234123'
   end
 end
