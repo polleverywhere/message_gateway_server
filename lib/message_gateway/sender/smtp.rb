@@ -14,7 +14,7 @@ class MessageGateway
         end
 
         if carrier and carrier.email?
-          EM::Protocols::SmtpClient.send(opts.merge(:from=> message.from, :to=> [carrier.to_email(message.to)], :header=> headers, :body=> message.body))
+          EM::Protocols::SmtpClient.send(opts.merge(:from=> message.from, :to=> [carrier.to_email(message.to)], :header=> {}, :body=> message.body))
         elsif carrier.nil?
           d = EM::DefaultDeferrable.new
           d.fail("This number does not have carrier info, or, no explict carrier was specified")
