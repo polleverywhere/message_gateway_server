@@ -1,0 +1,1 @@
+WillPaginate.enable_activerecord

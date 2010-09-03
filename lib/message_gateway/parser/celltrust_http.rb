@@ -66,7 +66,6 @@ class MessageGateway
       add_carrier_mapping :east_kentucky, "East_Kentucky"
       
       def from_value(req)
-        p req.params
         req.params['OriginatorAddress']
       end
 

@@ -10,19 +10,7 @@ require 'activerecord'
 require 'thin/async'
 require 'will_paginate'
 require 'message_gateway/version'
-
-WillPaginate.enable_activerecord
-
-#module ActiveRecord
-#  module ConnectionAdapters
-#    module QueryCache
-#      private
-#      def cache_sql(sql)
-#        yield
-#      end
-#    end
-#  end
-#end
+require 'ext/setup'
 
 class MessageGateway
   autoload :Admin,              'message_gateway/admin'
