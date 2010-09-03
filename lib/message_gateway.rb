@@ -10,19 +10,7 @@ require 'activerecord'
 require 'thin/async'
 require 'will_paginate'
 require 'message_gateway/version'
-
-WillPaginate.enable_activerecord
-
-module ActiveRecord
-  module ConnectionAdapters
-    module QueryCache
-      private
-      def cache_sql(sql)
-        yield
-      end
-    end
-  end
-end
+require 'ext/setup'
 
 class MessageGateway
   autoload :Admin,              'message_gateway/admin'
@@ -30,7 +18,7 @@ class MessageGateway
   autoload :Parser,             'message_gateway/parser'
   autoload :Sender,             'message_gateway/sender'
   autoload :Logging,            'message_gateway/logging'
-  autoload :Logger,             'message_gateway/logger'
+  autoload :MessageLogger,      'message_gateway/message_logger'
   autoload :Message,            'message_gateway/message'
   autoload :SmsMessage,         'message_gateway/sms_message'
   autoload :PhoneNumber,        'message_gateway/phone_number'

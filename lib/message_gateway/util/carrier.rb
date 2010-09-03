@@ -85,7 +85,7 @@ class MessageGateway
           
           def to_email(num)
             canoncialized_number = canonicalize_phone_number(num)
-            if canoncialized_number and canoncialized_number.size == 10
+            if canoncialized_number and canoncialized_number.size == 11
               "#{canoncialized_number}@#{@email_domain}"
             else
               nil
