@@ -27,14 +27,14 @@ class MessageGateway
       layout :application
 
       def url_for(*args)
-        "/admin/messages?#{Rack::Utils.build_query(args.last)}"
+        "/#{@prefix}/messages?#{Rack::Utils.build_query(args.last)}"
       end
-
+      
       include WillPaginate::ViewHelpers
 
       before do
         @gateway = env['message_gateway']
-        @prefix = '/admin'
+        @prefix = '/message_gateway'
         @notice = session.delete('notice')
       end
 
