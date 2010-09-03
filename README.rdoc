@@ -84,7 +84,7 @@ Configuration right now takes place in a rackup file. Here is an example configu
   
   gateway = MessageGateway.new('my gateway', "http://127.0.0.1:3000/interpret") # This takes a name for display purposes and an endpoint to send messages to.
   gateway.beanstalk('127.0.0.1') # This sets the beanstalk host (and port) for use as a queue
-  gateway.logger = MessageGateway::Logger.new(:adapter => "mysql", :host => "127.0.0.1", :database => "message_gateway", :username => "root", :password => "")
+  gateway.logger = MessageGateway::MessageLogger.new(:adapter => "mysql", :host => "127.0.0.1", :database => "message_gateway", :username => "root", :password => "")
   # this configures mysql for use as a logger.
   
   gateway.outbound(:unwired_appeal, '99999') { |out|   # This configures an outbound message sender. The first parameter is the adapter to use

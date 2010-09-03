@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe MessageGateway::Logger do
+describe MessageGateway::MessageLogger do
   before(:each) do
     @logger = MessageGateway.default_logger
     @logger.soft_reset!
@@ -31,9 +31,9 @@ describe MessageGateway::Logger do
     @logger.record_status(message, "start")
     @logger.record_status(message, "start2")
     @logger.record_status(message, "start3")
-    MessageGateway::Logger::State.count.should == 1
-    MessageGateway::Logger::Event.count.should == 3
-    MessageGateway::Logger::State.find_by_message(message).events.size.should == 3
+    MessageGateway::MessageLogger::State.count.should == 1
+    MessageGateway::MessageLogger::Event.count.should == 3
+    MessageGateway::MessageLogger::State.find_by_message(message).events.size.should == 3
   end
 
   it "should record the reply chain" do
@@ -42,10 +42,10 @@ describe MessageGateway::Logger do
     reply_message = message.reply('no, you suck!')
     @logger.record_status(reply_message, "start")
     
-    MessageGateway::Logger::State.find(reply_message.id).replied_from.body.should == 'body'
-    MessageGateway::Logger::State.find(message.id).reply.body.should == 'no, you suck!'
-    MessageGateway::Logger::State.find(reply_message.id).reply.should be_nil
-    MessageGateway::Logger::State.find(message.id).replied_from.should be_nil
+    MessageGateway::MessageLogger::State.find(reply_message.id).replied_from.body.should == 'body'
+    MessageGateway::MessageLogger::State.find(message.id).reply.body.should == 'no, you suck!'
+    MessageGateway::MessageLogger::State.find(reply_message.id).reply.should be_nil
+    MessageGateway::MessageLogger::State.find(message.id).replied_from.should be_nil
   end
 
   it "should record a detailed error with it" do

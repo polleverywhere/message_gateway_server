@@ -9,7 +9,7 @@ class MessageGateway
       def call(message)
         carrier = if message.respond_to?(:carrier)
           message.carrier
-        elsif extra = Logger::State.find_extra_for_number(message.to)
+        elsif extra = MessageLogger::State.find_extra_for_number(message.to)
           carrier_for_id(JSON.parse(extra)['carrier_id'])
         end
 

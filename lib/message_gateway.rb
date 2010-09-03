@@ -18,7 +18,7 @@ class MessageGateway
   autoload :Parser,             'message_gateway/parser'
   autoload :Sender,             'message_gateway/sender'
   autoload :Logging,            'message_gateway/logging'
-  autoload :Logger,             'message_gateway/logger'
+  autoload :MessageLogger,      'message_gateway/message_logger'
   autoload :Message,            'message_gateway/message'
   autoload :SmsMessage,         'message_gateway/sms_message'
   autoload :PhoneNumber,        'message_gateway/phone_number'
