@@ -16,7 +16,7 @@ class MessageGateway
 
       def add_login(id, user, password)
         raise "Cannot find carrier #{id}" unless carrier_for_id(id)
-        @mt_carrier_logins[carrier_for_id(id)] = [user, password]
+        @mt_carrier_logins[carrier_for_id(id)] = [username, password]
       end
 
       def verify
@@ -24,14 +24,14 @@ class MessageGateway
       end
 
       def send(message)
-        user, password = message.respond_to?(:carrier) && message.carrier && @mt_carrier_logins[message.carrier] ?
+        username, password = message.respond_to?(:carrier) && message.carrier && @mt_carrier_logins[message.carrier] ?
           @mt_carrier_logins[message.carrier] :
-          [@user, @password]
+          [@username, @password]
 
-        raise "user must be set or derived from add_login"      unless user
+        raise "user must be set or derived from add_login"      unless username
         raise "password must be set or derived from add_login"  unless password
 
-        defer_success_on_200(EM::HttpRequest.new(END_POINT_URL).get :query => {'user' => user, 'pass' => password, 'smsfrom' => @shortcode, 'carrier' => message.carrier ? denormalize_carrier(message.carrier) : '', 'smsto' => message.to, 'smsmsg' => message.body, 'split' => @split, 'flash' => @flash, 'report' => @report})
+        defer_success_on_200(EM::HttpRequest.new(END_POINT_URL).get :query => {'user' => username, 'pass' => password, 'smsfrom' => @shortcode, 'carrier' => message.carrier ? denormalize_carrier(message.carrier) : '', 'smsto' => message.to, 'smsmsg' => message.body, 'split' => @split, 'flash' => @flash, 'report' => @report})
       end
     end
   end
