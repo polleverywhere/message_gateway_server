@@ -2,9 +2,9 @@ require 'activerecord'
 require 'logger'
 
 class MessageGateway
-  class Logger
-    autoload :State,        'message_gateway/logger/state'
-    autoload :Event,        'message_gateway/logger/event'
+  class MessageLogger
+    autoload :State,        'message_gateway/message_logger/state'
+    autoload :Event,        'message_gateway/message_logger/event'
 
     attr_reader :statuses, :sources
 

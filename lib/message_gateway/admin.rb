@@ -43,7 +43,7 @@ class MessageGateway
       end
 
       get '/dashboard' do
-        @states = Logger::State.find(:all, :order => "id desc", :limit => 30)
+        @states = MessageLogger::State.find(:all, :order => "id desc", :limit => 30)
         @mo_graph_data = @gateway.processors.map do |name, processor|
           [name, processor.mo_success_buckets]
         end unless @gateway.processors.empty?
@@ -54,12 +54,12 @@ class MessageGateway
       end
 
       get '/log' do
-        @states = Logger::State.find(:all, :order => "id desc", :limit => 30)
+        @states = MessageLogger::State.find(:all, :order => "id desc", :limit => 30)
         haml :log
       end
       
       get '/messages/:id' do
-        @state = Logger::State.find(params[:id])
+        @state = MessageLogger::State.find(params[:id])
         haml :message
       end
 
@@ -86,7 +86,7 @@ class MessageGateway
           parts << "with source <strong>#{@conditions[:conditions][:source]}</strong>" if @conditions[:conditions][:source]
           @description << " " << parts.join(' and ')
         end
-        @states = Logger::State.paginate @conditions.merge(:page => params[:page])
+        @states = MessageLogger::State.paginate @conditions.merge(:page => params[:page])
         
         if params[:reply]
           @states.each do |state|
@@ -105,13 +105,13 @@ class MessageGateway
       
       get '/processor/:name' do |name|
         @processor = @gateway.processors[name] or raise
-        @events = Logger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? order by events.id desc limit 30", name])
+        @events = MessageLogger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? order by events.id desc limit 30", name])
         haml :processor
       end
 
       get '/dispatcher/:name' do |name|
         @dispatcher = @gateway.dispatchers[name] or raise
-        @events = Logger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? and events.status like 'mt_%' order by events.id desc limit 30", name])
+        @events = MessageLogger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? and events.status like 'mt_%' order by events.id desc limit 30", name])
         haml :dispatcher
       end
 

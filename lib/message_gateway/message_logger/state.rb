@@ -1,10 +1,10 @@
 require 'digest/md5'
 class MessageGateway
-  class Logger
+  class MessageLogger
     class State < ActiveRecord::Base
-      has_many :events, :class_name => 'MessageGateway::Logger::Event'
-      has_one :replied_from, :class_name => 'MessageGateway::Logger::State', :primary_key => 'reply_to_id', :foreign_key => 'id'
-      has_one :reply, :class_name => 'MessageGateway::Logger::State', :foreign_key => 'reply_to_id'
+      has_many :events, :class_name => 'MessageGateway::MessageLogger::Event'
+      has_one :replied_from, :class_name => 'MessageGateway::MessageLogger::State', :primary_key => 'reply_to_id', :foreign_key => 'id'
+      has_one :reply, :class_name => 'MessageGateway::MessageLogger::State', :foreign_key => 'reply_to_id'
 
       def self.find_by_message(message)
         message.id && find(message.id)

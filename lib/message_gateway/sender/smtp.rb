@@ -9,12 +9,12 @@ class MessageGateway
       def call(message)
         carrier = if message.respond_to?(:carrier)
           message.carrier
-        elsif extra = Logger::State.find_extra_for_number(message.to)
+        elsif extra = MessageLogger::State.find_extra_for_number(message.to)
           carrier_for_id(JSON.parse(extra)['carrier_id'])
         end
 
         if carrier and carrier.email?
-          EM::Protocols::SmtpClient.send(opts.merge(:from=> message.from, :to=> [carrier.to_email(message.to)], :header=> headers, :body=> message.body))
+          EM::Protocols::SmtpClient.send(opts.merge(:from=> message.from, :to=> [carrier.to_email(message.to)], :header=> {}, :body=> message.body))
         elsif carrier.nil?
           d = EM::DefaultDeferrable.new
           d.fail("This number does not have carrier info, or, no explict carrier was specified")

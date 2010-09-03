@@ -29,7 +29,7 @@ describe MessageGateway::SmsSendingEndpoint do
         response.first.should == 200
         EM.add_timer(0.2) {
           @gateway.dispatchers['test'].success_count.should == 1
-          states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+          states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
           states.size.should == 1
           states.first.body.should == 'Thank you for your vote(s).'
           states.first.status.should == 'mt_success'
@@ -58,7 +58,7 @@ describe MessageGateway::SmsSendingEndpoint do
         response.first.should == 200
         EM.add_timer(3.2) {
           @gateway.dispatchers['test'].success_count.should == 3
-          states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+          states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
           states.size.should == 3
           states.map(&:body).uniq.size.should == 1
           states.map(&:body).uniq.first.should == 'Thank you for your vote(s).'

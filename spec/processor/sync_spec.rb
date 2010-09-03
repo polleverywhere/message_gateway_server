@@ -29,7 +29,7 @@ describe MessageGateway::Processor::Sync do
       http.callback {
         http.response.should == "Thank you for your vote(s)."
         gateway.processors['test'].mo_success_buckets.should == [1]
-        states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+        states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
         states.size.should == 2
         states.first.body.should == 'body'
         states.first.status.should == 'mo_success'
@@ -73,10 +73,10 @@ describe MessageGateway::Processor::Sync do
       http = test_processor
       http.callback {
         gateway.processors['test'].mo_success_buckets.should == [0]
-        state = MessageGateway::Logger::State.first
+        state = MessageGateway::MessageLogger::State.first
         state.status.should == 'mo_permanent_failure'
         state.body.should == 'body'
-        MessageGateway::Logger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure"]
+        MessageGateway::MessageLogger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure"]
         EM.stop
       }
     end
@@ -106,17 +106,17 @@ describe MessageGateway::Processor::Sync do
       http = test_processor
       http.callback {
         gateway.processors['test'].mo_success_buckets.should == [0]
-        state = MessageGateway::Logger::State.first
+        state = MessageGateway::MessageLogger::State.first
         state.status.should == 'mo_permanent_failure'
         state.body.should == 'body'
-        MessageGateway::Logger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure"]
+        MessageGateway::MessageLogger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure"]
         gateway.backend_endpoint = "http://127.0.0.1:10101/sms"
         gateway.replay_mo(state.to_message)
         EM.add_timer(0.3) do
-          MessageGateway::Logger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure", 'mo_start', 'mo_success', 'mt_start', 'mt_success']
+          MessageGateway::MessageLogger::Event.find(:all, :order => 'id asc').map(&:status).should == ["mo_start", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_failure", "mo_permanent_failure", 'mo_start', 'mo_success', 'mt_start', 'mt_success']
           gateway.dispatchers['test'].success_count.should == 1
           gateway.processors['test'].mo_success_buckets.should == [1]
-          states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+          states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
           states.size.should == 2
           states.first.body.should == 'body'
           states.first.status.should == 'mo_success'
@@ -145,7 +145,7 @@ describe MessageGateway::Processor::Sync do
       http.callback {
         http.response.should == ""
         gateway.processors['test'].mo_success_buckets.should == [1]
-        states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+        states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
         states.size.should == 1
         states.first.body.should == 'body'
         states.first.status.should == 'mo_success'

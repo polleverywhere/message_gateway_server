@@ -43,7 +43,7 @@ describe MessageGateway::Processor::Async do
       EM.add_timer(0.5) {
         gateway.dispatchers['test'].success_count.should == 1
         gateway.processors['test'].mo_success_buckets.should == [1]
-        states = MessageGateway::Logger::State.find(:all, :order => 'id asc')
+        states = MessageGateway::MessageLogger::State.find(:all, :order => 'id asc')
         states.size.should == 2
         states.first.body.should == 'body'
         states.first.status.should == 'mo_success'
@@ -78,7 +78,7 @@ describe MessageGateway::Processor::Async do
       }
       EM.add_timer(0.5) {
         gateway.processors['test'].mo_success_buckets.should == [0]
-        state = MessageGateway::Logger::State.first
+        state = MessageGateway::MessageLogger::State.first
         state.status.should == 'mo_permanent_failure'
         state.body.should == 'body'
         EM.stop
