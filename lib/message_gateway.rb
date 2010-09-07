@@ -42,7 +42,8 @@ class MessageGateway
 
   def logger=(logger)
     @logger = logger
-    ActiveRecord::Base.logger = @log if logger
+    @logger.gateway = self
+    ActiveRecord::Base.logger = @log if @logger
   end
 
   def initialize(name, backend_endpoint)

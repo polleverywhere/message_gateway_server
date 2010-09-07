@@ -7,6 +7,7 @@ class MessageGateway
     autoload :Event,        'message_gateway/message_logger/event'
 
     attr_reader :statuses, :sources
+    attr_accessor :gateway
 
     def initialize(opts)
       ActiveRecord::Base.logger = nil
@@ -59,7 +60,8 @@ class MessageGateway
       state = State.record_status(message, status.to_s, err)
       state
     rescue
-      puts "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+     "#{$!.message}\n#{$!.backtrace.join("\n")}"
+      gateway.log.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
     end
   end
 end
