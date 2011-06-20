@@ -1,4 +1,5 @@
 require 'logger'
+require 'rubygems'
 require 'rack'
 require 'thin'
 require 'thin/async'
