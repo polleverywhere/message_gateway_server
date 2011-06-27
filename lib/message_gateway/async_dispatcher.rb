@@ -1,4 +1,7 @@
 class MessageGateway
+
+  # AsyncDispatcher interacts with SmsSendingEndpoint, putting messages on a beanstalk queue and processing
+  # them off. It is created when you set up an outbound mobile agregator (using MessageGateway#outbound).
   class AsyncDispatcher
     include Logging
     include BeanstalkClient
@@ -46,7 +49,10 @@ class MessageGateway
     def inject_with_delay(message, delay)
       EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name).put({'message' => message.to_hash}.to_json, :delay => delay)
     end
-    
+
+
+    # AsyncDispatcher#process takes Messages that have been serialized to JSON and put on the Beanstalk queue
+    # It calls the MessageGateway::Sender subclass (which you specified to the MessageGateway object)
     def process
       @beanstalk_connection.reserve do |job|
         parsed_job = JSON.parse(job.body)
@@ -55,7 +61,7 @@ class MessageGateway
           message = Message.from_hash(parsed_job['message'])
           log_mt_start(message) if parsed_job['attempts'] == 0
           begin
-            send = @out.call(message)
+            send = @out.call(message)  # @out is the MessageGateway::Sender subclass
             send.callback do
               job.delete {
                 increment_success

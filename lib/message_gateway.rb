@@ -56,6 +56,8 @@ class MessageGateway
     puts "Starting message gateway -- connecting to #{backend_endpoint}"
   end
 
+
+  # Returns the ENDPOINT used to send messages out (mobile terminating). (an SmsSendingEndpoint)
   def sms_sending_endpoint
     @sms_sending_endpoint ||= SmsSendingEndpoint.new(self)
   end
@@ -112,11 +114,13 @@ class MessageGateway
   end
 
 	# This method sets up new mobile aggregators. You can interface with it one of two ways:
-	# 1.) Pass an instance of your subclass. This instance should respond to #call, as defined in the informal interface
+	# 1.) Pass an instance of your MessageGateway::Sender subclass. This instance should respond to #call, as defined in the informal interface
 	# 2.) Pass a string of your subclass name. underscores are converted to capital letters
 	#   (like Rails finds the constant RequiredTodos from "has_many :required_todos"
 	#
 	# In industry speak, this is setting up your agreegator which you send "mobile terminating"  messages through
+	#
+	# To see the avaliable classes (ie: mobile agreegators), look at mesasge_gateway/sender/*.rb
 	#
 	# THIS NEEDS TO BE CALLED FROM YOUR RACKUP FILE!!
   def outbound(o, name, &blk)

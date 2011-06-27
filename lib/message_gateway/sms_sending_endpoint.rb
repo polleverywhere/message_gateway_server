@@ -1,4 +1,7 @@
 class MessageGateway
+
+  # An interface to send a SMS message out to the mobile agreegator. Follows a C++ functor (or: functional object)
+  # style pattern
   class SmsSendingEndpoint
     
     attr_accessor :default_source
@@ -11,6 +14,18 @@ class MessageGateway
       @gateway = gateway
     end
 
+    # When called (by Rack/HTTPRouter sending a request its way) it will send send the message to a mobile agreegator for
+    # sending.
+    #
+    # PARAMS you should pass to this function: to, body, source.
+    #   - TO: the phone number to send the message to
+    #   - BODY: the message
+    #   - SOURCE: the message dispatcher to use to send the message. Must correspond with one
+    #             of the dispatchers associated with the gateway
+    #             [set up in the MessageGateway object by using MessageGateway#outbound or MessageGateway#add_outbound)
+    #
+    # SmsSendingEndpoint is an asyncronous model: it puts messages onto a Beanstalk queue (using EventMachine)
+    # for later processing
     def call(env)
       req = Rack::Request.new(env)
       
@@ -48,7 +63,11 @@ class MessageGateway
               [req['body']]
             end
           
-            bodies.each_with_index { |body, index| source.inject_with_delay(Message.from_hash(data.merge('body' => body)), index * message_delay) }
+            bodies.each_with_index do |body, index|
+              source.inject_with_delay(
+                Message.from_hash(data.merge('body' => body)), index * message_delay)
+            end
+
             Rack::Response.new(['OK'], 200).finish
           end
         rescue Message::BadParameter => e

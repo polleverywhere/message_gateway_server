@@ -114,6 +114,12 @@ Once you've set up an SMS sending endpoint, you can send messages to it. Simply 
 * body -- The contents of the message
 * source -- The identifier of the outbound processor to use. This is the name you've assigned the source when you set it up. (This is optional, you can configure a default source)
 
+"Post data where?", one might ask: To the route that calls the SMS sending end point... in the above rackup example, it's the
+
+  post('send').to end_point
+  
+line
+
 == Current limitations
 
 There are some limitations. For one, using a rackup file is a bit awkward for configuration. For another, there is no way to try several aggregators to see which can send a message. As well, there is currently no support for delivery receipts.

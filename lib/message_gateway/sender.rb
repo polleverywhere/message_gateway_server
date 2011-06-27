@@ -1,4 +1,28 @@
 class MessageGateway
+
+  # The subclass interface for mobile terminating (aka: outbound) traffic.
+  #
+  # TO CREATE AN INTERFACE FOR A NEW MOBILE AGGREGATOR:
+  #
+  #  1. Create your class structure as follows:
+  #    class MessageGateway
+  #      class Sender
+  #         class MyGatewayName < Sender
+  #            ...
+  #          end
+  #       end
+  #    end
+  #
+  # 2. Your subclass *must* implement the following protocol (quack like the following duck):
+  #    * def send(message)
+  #       - This method sends the actual message to the Mobile Aggregator. Do whatever HTTP request
+  #           you need to do, with whatever data elements, that the Mobile Aggregator demands.
+  #       - This method must return a EventMachine defered object... ideally by calling Sender#defer_success_on_200
+  #
+  #    * def verify
+  #
+  # 3. add a new autoload line to sender.rb (this file)
+  #
   class Sender
     include Logging
     
