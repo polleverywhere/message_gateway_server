@@ -64,6 +64,15 @@ class MessageGateway
     @beanstalk_host = host
   end
 
+	# Sets up a mobile agreegator for incoming messages
+	# (Or, in industry speak, "mobile originating" messages)
+	#
+	# The first param is what type of processing you want (async, or syncronous)
+	# The second params is the name of the endpoint
+	# 
+	# Take the results from this call and call #parser on it,
+	# to inform message gateway which mobile agreegator to use for
+	# messages coming down this pipe.
   def inbound(type, name, *args)
     raise("inbound #{name} already exists") if @processors.key?(name)
     processor = self.class.const_get(:Processor).const_get(make_const(type)).new(*args)
@@ -77,22 +86,39 @@ class MessageGateway
     "#{@name}-#{type}-#{name}"
   end
 
+
+	# MessageGateway comes with its own Admin (Sinatra) app, to allow you to see the messages in the que, or even replay messages
+	# This method fires up that application (also depends on your rackup file)
+	# 
+	# You would use this in your rackup file to connect the sinatra app to a URL path
   def admin
     Admin.new(self)
   end
 
+	# MG has the ability to replay messages, to aid debugging. (This is used by the admin app, for example)
+	# replay_wt replays a MOBILE TERMINATING SMS message (a message that we SEND TO a phone)
   def replay_mt(msg)
     if @dispatchers[msg.source]
       @dispatchers[msg.source].inject(msg) 
     end
   end
 
+	# See documentation for replay_mt, except this function replays MOBILE ORIGINATING messages
+	# (a message that COMES FROM a phone)
   def replay_mo(msg)
     if @processors[msg.source]
       @processors[msg.source].process(msg)
     end
   end
 
+	# This method sets up new mobile aggregators. You can interface with it one of two ways:
+	# 1.) Pass an instance of your subclass. This instance should respond to #call, as defined in the informal interface
+	# 2.) Pass a string of your subclass name. underscores are converted to capital letters
+	#   (like Rails finds the constant RequiredTodos from "has_many :required_todos"
+	#
+	# In industry speak, this is setting up your agreegator which you send "mobile terminating"  messages through
+	#
+	# THIS NEEDS TO BE CALLED FROM YOUR RACKUP FILE!!
   def outbound(o, name, &blk)
     if o.respond_to?(:call)
       o.gateway = self

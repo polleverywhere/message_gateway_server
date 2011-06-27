@@ -118,6 +118,14 @@ Once you've set up an SMS sending endpoint, you can send messages to it. Simply 
 
 There are some limitations. For one, using a rackup file is a bit awkward for configuration. For another, there is no way to try several aggregators to see which can send a message. As well, there is currently no support for delivery receipts.
 
+== Firing up the test suite
+
+You are running the tests before trying any of this, right?
+
+spec/spec_helper.rb defines MessageGateway.default_logger. This object also keeps the database connection information.
+
+By default the test suite uses mysql, with username root and no password, to connect to a database named "message_gateway_test"
+
 == License
 
 This software is distributed under GNU General Public License (http://www.gnu.org/licenses/gpl.html).

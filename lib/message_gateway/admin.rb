@@ -4,17 +4,19 @@ require 'padrino-helpers'
 
 class MessageGateway
   class Admin
-    
+
     def initialize(gateway)
       @gateway, @app = gateway, SinatraApp
       puts "Starting admin console"
     end
-    
+
     def call(env)
       env['message_gateway'] = @gateway
       @app.call(env)
     end
 
+    # Define a Sinatra (with Padrino helpers!) app for administrative purposes.
+    # Launch this by calling MessageGateway#admin (have your rackup file in place!)
     class SinatraApp < Sinatra::Base
       
       register Padrino::Helpers
