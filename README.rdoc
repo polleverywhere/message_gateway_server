@@ -120,6 +120,11 @@ Once you've set up an SMS sending endpoint, you can send messages to it. Simply 
   
 line
 
+== Recieving messages
+
+Once you've set up an inbound endpoint (the HttpRouter block above adds('sms/incoming.sms'), as an example), the
+mobile agreegator will post to that URL. See the Processor rdocs for more information here.
+
 == Current limitations
 
 There are some limitations. For one, using a rackup file is a bit awkward for configuration. For another, there is no way to try several aggregators to see which can send a message. As well, there is currently no support for delivery receipts.

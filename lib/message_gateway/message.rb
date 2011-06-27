@@ -1,4 +1,13 @@
 class MessageGateway
+  # Encapsulates a message we want to send (usually an SMS Message).
+  #
+  # This object is not, exactly, part of the public API for this gem.
+  #
+  # In answer to your question, "How do we send such a thing out (TO a user's mobile device, for example?"
+  #   the answer is: see SmsSendingEndpoint
+  #
+  # In answer to your question, "How do we recieve such a message, FROM a user?"
+  #   the answer is: see Processor
   class Message < Struct.new(:from, :to, :body, :source, :in_reply_to)
     BadParameter = Class.new(RuntimeError)
 

@@ -12,6 +12,9 @@ class MessageGateway
         @waiting_jobs = 0
       end
 
+      # Gets called when Rack/HttpRouter determines that a request is for us.
+      # In this subclasses implementation, we process the message right here (or, technically, our associated
+      # Parser object does), while the HTTP request waits around for us to finish.
       def call(env)
         response = Thin::AsyncResponse.new(env)
         response.status = 200

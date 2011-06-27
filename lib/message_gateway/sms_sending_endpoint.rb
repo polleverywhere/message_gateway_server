@@ -1,7 +1,7 @@
 class MessageGateway
 
   # An interface to send a SMS message out to the mobile agreegator. Follows a C++ functor (or: functional object)
-  # style pattern
+  # style pattern... later called by Rack/HttpRouter.
   class SmsSendingEndpoint
     
     attr_accessor :default_source
@@ -14,8 +14,8 @@ class MessageGateway
       @gateway = gateway
     end
 
-    # When called (by Rack/HTTPRouter sending a request its way) it will send send the message to a mobile agreegator for
-    # sending.
+    # When called (by Rack/HTTPRouter sending a request its way - see the gem README) it will send
+    # the message to a mobile agreegator for transmitting.
     #
     # PARAMS you should pass to this function: to, body, source.
     #   - TO: the phone number to send the message to

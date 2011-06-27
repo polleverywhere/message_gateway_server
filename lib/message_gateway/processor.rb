@@ -1,4 +1,16 @@
 class MessageGateway
+
+  # Processor is the subclass for Async and Sync mobile originating messages (aka: message a user
+  # is sending to us).
+  #
+  # MessageGateway comes with two processors: Asynchronous and Synchronous.
+  # These subclasses must respond to the following methods:
+  #   * init
+  #   * call(env)
+  #   * process(message, response)
+  #
+  # Processor instances are - like SmsSendingEndpoints - simple functors / function objects called
+  # by Rack/HttpRouter when a mobile agreegator is relaying a message to us
   class Processor
     include Logging
     
@@ -28,7 +40,9 @@ class MessageGateway
     def message(from, to, body, cls = Message)
       cls.new(from, to, body, name, nil)
     end
-    
+
+    # set up the Parser object for this object. Each mobile agreegator has a Parser object, which extracts
+    # the custom parameters from the mobile agreegator, and transforms it into a simple and consistant hash
     def parser(p, *args, &blk)
       if p.respond_to?(:call)
         @parser_instance = p

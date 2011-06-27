@@ -1,4 +1,9 @@
 class MessageGateway
+
+  # Each mobile agreegator has different formats of which it sends data to us (from a mobile originating)
+  # SMS message. 
+  #
+  # This class is to incoming messages what Processor is to outgoing messages
   module Parser
     include PhoneNumber
     include Logging

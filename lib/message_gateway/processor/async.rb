@@ -29,7 +29,10 @@ class MessageGateway
       def tube_name
         gateway.tube_for_name(name, 'incoming')
       end
-      
+
+      # Gets called when Rack/HttpRouter determines that a request is for us.
+      # In this class's implementation, we shove the message on a beanstalk and return immediately
+      # (Async#run processes these)
       def call(env)
         if message = @parser_instance.call(env)
           response = Thin::AsyncResponse.new(env)
