@@ -52,7 +52,8 @@ class MessageGateway
       end
       self
     end
-    
+
+    # Send translated message to the "message recieved application logic callback" endpoint
     def send_message(message, endpoint = gateway.backend_endpoint, &blk)
       http = EventMachine::HttpRequest.new(endpoint).post :body => message.to_hash, :timeout => 10
       http.callback(&blk) if blk
