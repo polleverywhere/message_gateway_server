@@ -47,6 +47,13 @@ class MessageGateway
     ActiveRecord::Base.logger = @log if @logger
   end
 
+  # The constructor for the MessageGateway object takes two parameters:
+  #  1. The name of the gateway
+  #  2. The HTTP endpoint to call *in your app* when a message is received (a mobile originating message)
+  #    This endpoint will receive three parameters - from, to, and body. Message Gateway is responsible
+  #    for converting the different Mobile Aggregator passing styles into these consistant parameters.
+  #
+  #    In this way, you could think of Message Gateway as the OmniAuth of Mobile Aggregators
   def initialize(name, backend_endpoint)
     Thin::Logging.silent = true
     @name, @backend_endpoint, @dispatchers, @processors = name, backend_endpoint, {}, {}
