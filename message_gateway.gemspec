@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "message_gateway"
   s.version     = MessageGateway::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
+  s.authors     = ["Joshua Hull", "Ryan Wilcox", "Sean Eby", "Brad Gessler", "Jeff Vyduna"]
   s.email       = []
   s.homepage    = "http://rubygems.org/gems/message_gateway"
   s.description = "A bidirectional short message gateway."
@@ -18,13 +18,14 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord", '= 2.3.8'
   s.add_dependency 'yajl-ruby', ">= 0.7.5"
   s.add_dependency 'oauth', ">= 0.4.2"
-  s.add_dependency "sinatra"
   s.add_dependency "json"
   s.add_dependency "mysqlplus"
   s.add_dependency "thin"
   s.add_dependency "will_paginate", "~> 2.3.11"
   s.add_dependency "haml"
-  s.add_dependency "padrino"
+  s.add_dependency "padrino", "= 0.9.15"
+  s.add_dependency "sinatra", ">= 1.0.0"
+
   s.add_dependency "rack"
   s.add_dependency "chirpstream"
   s.add_dependency "nokogiri"
@@ -33,6 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency "http_router", '>= 0.3.10'
   s.add_dependency "em-jack"
   s.add_dependency "eventmachine"
+
   s.add_development_dependency "bundler", ">= 1.0.0.rc.3"
   s.add_development_dependency "em-spec"
   s.add_development_dependency "rake"
