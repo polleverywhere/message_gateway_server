@@ -17,3 +17,6 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
   rd.rdoc_dir = 'rdoc'
 end
+
+require 'bundler'
+Bundler::GemHelper.install_tasks
