@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency "em-jack"
   s.add_dependency "eventmachine"
 
-  s.add_development_dependency "bundler", ">= 1.0.0.rc.3"
+  s.add_development_dependency "bundler", "~> 1.0.15"
   s.add_development_dependency "em-spec"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
@@ -47,3 +47,4 @@ Gem::Specification.new do |s|
   s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}
   s.require_path = 'lib'
 end
+
