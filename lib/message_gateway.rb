@@ -43,8 +43,11 @@ class MessageGateway
 
   def logger=(logger)
     @logger = logger
-    @logger.gateway = self
-    ActiveRecord::Base.logger = @log if @logger
+
+    if @logger
+      @logger.gateway = self if @logger
+      ActiveRecord::Base.logger = @log
+    end
   end
 
   # The constructor for the MessageGateway object takes two parameters:
