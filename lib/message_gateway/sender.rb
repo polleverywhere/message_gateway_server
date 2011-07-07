@@ -31,6 +31,7 @@ class MessageGateway
     autoload :Mblox,         'message_gateway/sender/mblox'
     autoload :MxTelecom,     'message_gateway/sender/mx_telecom'
     autoload :Opera,         'message_gateway/sender/opera'
+    autoload :Twilio,        'message_gateway/sender/twilio'
     autoload :Txtnation,     'message_gateway/sender/txtnation'
     autoload :UnwiredAppeal, 'message_gateway/sender/unwired_appeal'
     autoload :Smtp,          'message_gateway/sender/smtp'
