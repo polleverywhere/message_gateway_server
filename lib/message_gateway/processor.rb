@@ -48,7 +48,7 @@ class MessageGateway
         @parser_instance = p
         @parser_instance.processor = self
       else
-        parser(MessageGateway.const_get(:Parser).const_get(gateway.make_const(p)).new(*args, &blk))
+        parser(MessageGateway.const_get(:Parser).const_get(MessageGateway::Util.make_const(p)).new(*args, &blk))
       end
       self
     end

@@ -36,10 +36,14 @@ class MessageGateway
     autoload :UnwiredAppeal, 'message_gateway/sender/unwired_appeal'
     autoload :Smtp,          'message_gateway/sender/smtp'
 
-    attr_accessor :name, :from, :default_from
+    attr_accessor :name, :from, :default_from, :request_style
 
     def init
       yield self if block_given?
+
+      if self.request_style == nil
+        self.request_style = "AsyncRequest"
+      end
     end
 
     def start
@@ -77,6 +81,9 @@ class MessageGateway
       http.errback  { |err| d.fail(err) }
       d
     end
-    
+
+    def request_object
+      MessageGateway.const_get( MessageGateway::Util.make_const(self.request_style) ).new
+    end
   end
 end

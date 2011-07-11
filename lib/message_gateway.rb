@@ -24,6 +24,8 @@ class MessageGateway
   autoload :SmsMessage,         'message_gateway/sms_message'
   autoload :PhoneNumber,        'message_gateway/phone_number'
   autoload :AsyncDispatcher,    'message_gateway/async_dispatcher'
+  autoload :AsyncRequest,       'message_gateway/async_request'
+  autoload :SyncRequest,        'message_gateway/sync_request'
   autoload :BeanstalkClient,    'message_gateway/beanstalk_client'
   autoload :SmsSendingEndpoint, 'message_gateway/sms_sending_endpoint'
   autoload :Util,               'message_gateway/util'
@@ -87,7 +89,7 @@ class MessageGateway
 	# messages coming down this pipe.
   def inbound(type, name, *args)
     raise("inbound #{name} already exists") if @processors.key?(name)
-    processor = self.class.const_get(:Processor).const_get(make_const(type)).new(*args)
+    processor = self.class.const_get(:Processor).const_get(MessageGateway::Util.make_const(type)).new(*args)
     processor.gateway = self
     processor.name = name
     EM.schedule { processor.init }
@@ -123,12 +125,12 @@ class MessageGateway
     end
   end
 
-	# This method sets up new mobile aggregators. You can interface with it one of two ways:
+	# This method sets up new mobile aggregators for OUTBOUND (mobile terminating) messages.
+	#
+	# You can interface with it one of two ways:
 	# 1.) Pass an instance of your MessageGateway::Sender subclass. This instance should respond to #call, as defined in the informal interface
 	# 2.) Pass a string of your subclass name. underscores are converted to capital letters
 	#   (like Rails finds the constant RequiredTodos from "has_many :required_todos"
-	#
-	# In industry speak, this is setting up your agreegator which you send "mobile terminating"  messages through
 	#
 	# To see the avaliable classes (ie: mobile agreegators), look at mesasge_gateway/sender/*.rb
 	#
@@ -141,7 +143,7 @@ class MessageGateway
       o.start
       EM.schedule { add_outbound(o) }
     else
-      outbound(MessageGateway.const_get(:Sender).const_get(make_const(o)).new, name, &blk)
+      outbound(MessageGateway.const_get(:Sender).const_get(MessageGateway::Util.make_const(o)).new, name, &blk)
     end
   end
 
@@ -151,9 +153,5 @@ class MessageGateway
     dispatcher.gateway = self
     @dispatchers[out.name] = dispatcher
     dispatcher.start
-  end
-
-  def make_const(name)
-    name.to_s.split('_').map{|n| n.capitalize}.join.to_s
   end
 end
