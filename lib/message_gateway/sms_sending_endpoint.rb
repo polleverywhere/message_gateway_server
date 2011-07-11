@@ -20,9 +20,10 @@ class MessageGateway
     # PARAMS you should pass to this function: to, body, source.
     #   - TO: the phone number to send the message to
     #   - BODY: the message
-    #   - SOURCE: the message dispatcher to use to send the message. Must correspond with one
-    #             of the dispatchers associated with the gateway
+    #   - SOURCE: the message SENDER subclass with which to send the message. Must correspond with one
+    #             of the senders associated with the gateway
     #             [set up in the MessageGateway object by using MessageGateway#outbound or MessageGateway#add_outbound)
+    #           If not provided in the rack environment, will use the default sender for this endpoint (again, from the rakup file)
     #
     # SmsSendingEndpoint is an asyncronous model: it puts messages onto a Beanstalk queue (using EventMachine)
     # for later processing
