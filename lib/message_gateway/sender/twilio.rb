@@ -1,17 +1,23 @@
 class MessageGateway
   class Sender
+
+    # sends SMS messages via Twilio(.com).
+    # NOTE: the FROM number in your message MUST be a number you bought in Twilio
+    # (no, you can not spoof numbers)
     class Twilio < Sender
+      include PhoneNumber
+
       API_VERSION = '2010-04-01'
 
-      attr_accessor :account_sid, :account_token, :message_is_from
+      attr_accessor :account_sid, :account_token
 
       def send(message)
         twilio_send_url = "https://api.twilio.com/#{API_VERSION}/Accounts/#{@account_sid}/SMS/Messages"
 
-        defer_success_on_200(  EM::HttpRequest.new(twilio_send_url).post(
+        request_object.post( twilio_send_url, 
           :data => { 'Body' => message.body, 
-              'From' => @message_is_from, 'To' => canonicalize_phone_number(message.to) },
-          :head => {'authorization' => [@account_sid, @account_token]} )  )
+              'From' => message.from, 'To' => canonicalize_phone_number(message.to) },
+          :head => {'authorization' => [@account_sid, @account_token]} )
       end
 
       def verify
