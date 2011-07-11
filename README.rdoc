@@ -72,6 +72,18 @@ In the asynchronous model, a separate sending processor has to be setup, separat
 
 As well, there is another means of sending, SMTP. Many carrier support (as well, all major US carriers) sending messages by email. You can specify SMTP as a message source provided you configure it with a valid SMTP server.
 
+== Message Sending
+
+When you add an outbound message sender, Message Gateway assumes that you want to process messages asynchronously.
+
+Outbound message =======> Outbound SMS Sending Endpoint (SmsSendingEndpoint) ====> Beanstalk Queue for later processing 
+                                                                                          |
+                                                                                          |
+                                                  Appropriate Sender Subclass      < ==== 0
+
+Message Gateway is informed of outbound messages by an HTTP post from your app to the sending interface URL
+(set up with HttpRouter - see below)
+
 == Admin interface
 
 You can configure an admin interface which will give you a high level view of messages processed, and the success or failure of every message. If a message fails, you can attempt to replay it (either to the aggregator or to your site). As well, you can simulate a message from this panel.
