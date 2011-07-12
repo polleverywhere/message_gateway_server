@@ -12,7 +12,6 @@ describe MessageGateway::Parser::Twilio do
         '/?SmsSid=125345654323456&AccountSid=1234561234&Body=ask+poll+This+is+a+message&From=123456789&To=987654321'))
     end
 
-
     it "has a body of 'ask poll this is a message'" do
       @message.body.should == "ask poll This is a message"
     end

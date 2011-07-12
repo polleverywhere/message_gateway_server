@@ -137,13 +137,20 @@ line
 Once you've set up an inbound endpoint (the HttpRouter block above adds('sms/incoming.sms'), as an example), the
 mobile agreegator will POST to that URL. See the Processor rdocs for more information here.
 
-We'll call this the "message recieved application logic callback", for lack of a better name.
+We'll call this the "message received application logic callback", for lack of a better name.
 
-Your "message recieved application logic callback" will recieve the following parameters:
+Your "message received application logic callback" will recieve the following parameters:
 
   1. to   - reciever of the SMS message
   2. from - sender of the SMS message
   3. body - the body of the message
+
+In the "Synchronous processing" section of this document, the flow of this was described, but to put this
+into a little more perspective:
+
+  ** The response your "message received application callback" returns will be returned to the Mobile Aggregator.
+  As such, it should conform to their guidelines about the format of this message. (For example, Twilio
+  wants an XML-like document returned, and from this document you can send a text message back in reply to your user **
 
 == Current limitations
 
