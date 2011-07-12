@@ -21,6 +21,7 @@ class MessageGateway
     autoload :MxTelecom,     'message_gateway/parser/mx_telecom'
     autoload :Opera,         'message_gateway/parser/opera'
     autoload :Txtnation,     'message_gateway/parser/txtnation'
+    autoload :Twilio,        'message_gateway/parser/twilio'
     autoload :Textmarks,     'message_gateway/parser/textmarks'
     autoload :UnwiredAppeal, 'message_gateway/parser/unwired_appeal'
 
