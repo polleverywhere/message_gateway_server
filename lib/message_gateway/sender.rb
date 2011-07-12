@@ -42,7 +42,7 @@ class MessageGateway
       yield self if block_given?
 
       if self.request_style == nil
-        self.request_style = "AsyncRequest"
+        self.request_style = "async_request"
       end
     end
 
@@ -82,7 +82,25 @@ class MessageGateway
       d
     end
 
-    def request_object
+  # Retrieve the object you should use to make a request to the Mobile Agreegator
+  # (if you are implementing a Sender subclass)
+  #
+  # Certain situations (testing, initial implementation) are easier implemented
+  # by sending the post synchronously, for example, or logging the params to a database
+  #
+  # To configure this: in your gateway.outbound block in your rackup file, set the request_style attribute
+  # to the class_name which you want to use.
+  # 
+  # For example:
+  # gateway.outbound(...) do |out|
+  #   out.request_style = "sync_request"
+  # end
+  #
+  # Will use MessageGatway::SyncRequest - your requests to the mobile aggregator will
+  # block. (Useful for testing/development, an anti-pattern for production)
+  #
+  # Defaults to returning a MessageGatway::AsyncRequest instance
+  def request_object
       MessageGateway.const_get( MessageGateway::Util.make_const(self.request_style) ).new
     end
   end
