@@ -26,7 +26,7 @@ describe MessageGateway::Parser::Celltrust do
       parser = MessageGateway::Parser::Celltrust.new
       parser.processor = MessageGateway::Processor.new
       parser.processor.name = 'celltrust'
-      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:xml => text}))
+      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {"xml" => text}))
     end
     
     it "should have a 'from' of '1234561234'" do

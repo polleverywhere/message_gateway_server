@@ -19,7 +19,8 @@ describe MessageGateway::Parser::Clickatell do
       parser = MessageGateway::Parser::Clickatell.new
       parser.processor = MessageGateway::Processor.new
       parser.processor.name = 'clickatell'
-      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:data => text}))
+      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST',
+          :params => {"data" => text}))
     end
     
     it "should have a 'from' of '1234561234'" do

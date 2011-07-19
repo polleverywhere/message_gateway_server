@@ -33,7 +33,8 @@ describe MessageGateway::Parser::Mblox do
       parser = MessageGateway::Parser::Mblox.new
       parser.processor = MessageGateway::Processor.new
       parser.processor.name = 'mblox'
-      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', :params => {:xmldata => text}))
+      @message = parser.call(Rack::MockRequest.env_for('/', :method => 'POST', 
+        :params => {"xmldata" => text}))
     end
     
     it "should have a 'from' of '1234561234'" do
