@@ -5,8 +5,8 @@ class MessageGateway
   class AsyncRequest
   
     # TODO: need a GET method here too
-    def post(send_url, post_params)
-      defer_success_on_200(  EM::HttpRequest.new(send_url).post(post_params) )
+    def post(sender_subclass, send_url, post_params)
+      sender_subclass.defer_success_on_200(  EM::HttpRequest.new(send_url).post(post_params) )
     end
   end
 end

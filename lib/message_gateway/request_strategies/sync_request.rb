@@ -1,6 +1,6 @@
 class MessageGateway
   class SyncRequest
-    def post(send_url, post_params)
+    def post(sender_subclass, send_url, post_params)
       url = URI.parse(send_url)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true if send_url =~ /https/
