@@ -15,23 +15,23 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "tumbler"
 
-  s.add_dependency "activerecord", '= 2.3.8'
+  s.add_dependency "activerecord", '~> 3.0.9'
   s.add_dependency 'yajl-ruby', ">= 0.7.5"
   s.add_dependency 'oauth', ">= 0.4.2"
   s.add_dependency "json"
   s.add_dependency "mysqlplus"
-  s.add_dependency "thin"
+  s.add_dependency "thin", "~> 1.2.11"
   s.add_dependency "will_paginate", "~> 2.3.11"
   s.add_dependency "haml"
-  s.add_dependency "padrino", "= 0.9.15"
-  s.add_dependency "sinatra", ">= 1.0.0"
+  s.add_dependency "padrino", "~> 0.10.0"
+  s.add_dependency "sinatra", "~> 1.2.6"
 
-  s.add_dependency "rack", '= 1.0'
+  s.add_dependency "rack", '~> 1.1'
   s.add_dependency "chirpstream"
   s.add_dependency "nokogiri"
-  s.add_dependency "em-http-request", '>= 0.2.11'
+  s.add_dependency "em-http-request", '>= 0.3.0'
   s.add_dependency "thin_async", '>= 0.1.1'
-  s.add_dependency "http_router", '>= 0.3.10'
+  s.add_dependency "http_router", '>= 0.8.10'
   s.add_dependency "em-jack"
   s.add_dependency "eventmachine"
 
