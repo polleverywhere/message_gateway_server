@@ -5,13 +5,14 @@ require 'padrino-helpers'
 class MessageGateway
   class Admin
 
-    def initialize(gateway)
-      @gateway, @app = gateway, SinatraApp
+    def initialize(gateway, options={})
+      @gateway, @app, @options = gateway, SinatraApp, options
       puts "Starting admin console"
     end
 
     def call(env)
       env['message_gateway'] = @gateway
+      env["user_options"] = @options
       @app.call(env)
     end
 
@@ -37,6 +38,8 @@ class MessageGateway
       before do
         @gateway = env['message_gateway']
         @prefix = '/message_gateway'
+        @prefix = env['user_options'][:prefix] if env['user_options']
+
         @notice = session.delete('notice')
       end
 
@@ -49,9 +52,13 @@ class MessageGateway
         @mo_graph_data = @gateway.processors.map do |name, processor|
           [name, processor.mo_success_buckets]
         end unless @gateway.processors.empty?
+        @mo_graph_data = [] unless @mo_graph_data
+
         @mt_graph_data = @gateway.dispatchers.map do |name, dispatcher|
           [name, dispatcher.mt_success_buckets]
         end unless @gateway.dispatchers.empty?
+        @mt_graph_data = [] unless @mt_graph_data
+
         haml :dashboard
       end
 

@@ -7,7 +7,7 @@ require 'eventmachine'
 require 'em-jack'
 require 'chirpstream'
 require 'json'
-require 'activerecord'
+require 'active_record'
 require 'thin/async'
 require 'will_paginate'
 require 'message_gateway/version'
@@ -105,8 +105,8 @@ class MessageGateway
 	# This method fires up that application (also depends on your rackup file)
 	# 
 	# You would use this in your rackup file to connect the sinatra app to a URL path
-  def admin
-    Admin.new(self)
+  def admin(options={})
+    Admin.new(self, options)
   end
 
 	# MG has the ability to replay messages, to aid debugging. (This is used by the admin app, for example)
@@ -137,6 +137,7 @@ class MessageGateway
 	# THIS NEEDS TO BE CALLED FROM YOUR RACKUP FILE!!
   def outbound(o, name, &blk)
     if o.respond_to?(:call)
+      puts "scheduling adding an outbound aggregator"
       o.gateway = self
       o.name = name
       o.init(&blk)
@@ -152,6 +153,7 @@ class MessageGateway
     dispatcher = AsyncDispatcher.new(tube_for_name(out.name, 'outbound'), out)
     dispatcher.gateway = self
     @dispatchers[out.name] = dispatcher
+    puts "outbound source #{out.name} configured"
     dispatcher.start
   end
 end
