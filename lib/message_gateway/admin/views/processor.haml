@@ -44,7 +44,7 @@
             =event.state.body
 
 %h2 Simulate
-%form(action="#{@prefix}/processor/#{@processor.name}/simulate" method="post")
+%form(action="/#{@prefix}/processor/#{@processor.name}/simulate" method="post")
   %fieldset
     From
     %input(name="from" type="text")

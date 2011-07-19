@@ -12,7 +12,7 @@
       %tr(class="#{idx % 2 == 0 ? 'even' : 'odd'}")
         
         %td(class="#{state.status}")
-          %a(href="#{@prefix}/messages/#{state.id}")
+          %a(href="/#{@prefix}/messages/#{state.id}")
             =state.status
         %td
           =state.body

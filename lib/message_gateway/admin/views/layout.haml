@@ -1,8 +1,8 @@
 %html
   %head
-    %link(rel="StyleSheet" href="#{@prefix}/application.css" type="text/css" media="screen")
-    %script(type="text/javascript" src="#{@prefix}/jquery-1.4.2.min.js")
-    %script(type="text/javascript" src="#{@prefix}/jquery.flot.min.js")
+    %link(rel="StyleSheet" href="/#{@prefix}/application.css" type="text/css" media="screen")
+    %script(type="text/javascript" src="/#{@prefix}/jquery-1.4.2.min.js")
+    %script(type="text/javascript" src="/#{@prefix}/jquery.flot.min.js")
     %title Message Gateway - #{@gateway.started_at} - #{Process.pid}
   %body
     %div#navbar
@@ -12,17 +12,17 @@
         =@gateway.started_at
       %ul
         %li
-          %a(href="#{@prefix}/dashboard") Dashboard
+          %a(href="/#{@prefix}/dashboard") Dashboard
         %li
-          %a(href="#{@prefix}/log") Log
+          %a(href="/#{@prefix}/log") Log
         %li
-          %a(href="#{@prefix}/messages") Messages
+          %a(href="/#{@prefix}/messages") Messages
         %li
           Inbound processors
           %br
           -@gateway.processors.each do |name, processor|
             <span class="traffic_light #{processor.traffic_light_status}">&bull;</span>
-            %a(href="#{@prefix}/processor/#{name}")
+            %a(href="/#{@prefix}/processor/#{name}")
               =name 
             %br
           %li
@@ -30,7 +30,7 @@
             %br
             -@gateway.dispatchers.each do |name, dispatcher|
               <span class="traffic_light #{dispatcher.traffic_light_status}">&bull;</span>
-              %a(href="#{@prefix}/dispatcher/#{name}")
+              %a(href="/#{@prefix}/dispatcher/#{name}")
                 =name 
               %br
     %div#contents

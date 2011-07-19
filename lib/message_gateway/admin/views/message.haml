@@ -12,15 +12,15 @@
   %dd #{@state.body}
   %dt Source
   %dd
-    %a(href="#{@prefix}/messages?source=#{Rack::Utils.escape(@state.source)}") #{@state.source}
+    %a(href="/#{@prefix}/messages?source=#{Rack::Utils.escape(@state.source)}") #{@state.source}
   -if @state.replied_from
     %dt In Reply To
     %dd
-      %a(href="#{@prefix}/messages/#{@state.replied_from.id}") Message #{@state.replied_from.id}
+      %a(href="/#{@prefix}/messages/#{@state.replied_from.id}") Message #{@state.replied_from.id}
   -if @state.reply
     %dt Replied from
     %dd
-      %a(href="#{@prefix}/messages/#{@state.reply.id}") Message #{@state.reply.id}
+      %a(href="/#{@prefix}/messages/#{@state.reply.id}") Message #{@state.reply.id}
 
 %h2
   Events

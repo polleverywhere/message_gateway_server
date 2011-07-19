@@ -2,7 +2,7 @@
 %p
   =@description
 
-%form(action="#{@prefix}/messages" id="criteria")
+%form(action="/#{@prefix}/messages" id="criteria")
   Limit
   %input(name="per_page" value="#{params[:per_page] || @conditions[:per_page]}") 
   Order
@@ -40,7 +40,7 @@
         %td
           =state.created_at
         %td(class="#{state.status}")
-          %a(href="#{@prefix}/messages/#{state.id}")
+          %a(href="/#{@prefix}/messages/#{state.id}")
             =state.status
         %td
           =state.body
