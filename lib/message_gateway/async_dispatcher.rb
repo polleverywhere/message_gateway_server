@@ -71,6 +71,7 @@ class MessageGateway
             end
             send.errback { |err|
               gateway.log.error err
+              log_mt_failure(message, err)
               retry_job(job, parsed_job, message)
             }
           rescue
@@ -96,7 +97,6 @@ class MessageGateway
       else
         job.delete {
           @beanstalk_connection.put(parsed_job.to_json, :delay => 5 + (2 ** parsed_job['attempts'])) {
-            log_mt_failure(message)
             process
           }
         }

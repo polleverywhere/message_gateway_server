@@ -63,3 +63,7 @@ table {
 .date {
   font-size: 75%
 }
+
+.event_error {
+	padding-left: 4em;
+}
