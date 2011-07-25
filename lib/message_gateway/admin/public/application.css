@@ -59,3 +59,7 @@ table {
   background-color: #dddddd;
   color: #330000;
 }
+
+.date {
+  font-size: 75%
+}

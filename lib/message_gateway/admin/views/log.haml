@@ -7,6 +7,7 @@
       %th From
       %th To
       %th Source
+      %th Created At
   -@states.each_with_index do |state, idx|
     %tbody
       %tr(class="#{idx % 2 == 0 ? 'even' : 'odd'}")
@@ -22,3 +23,5 @@
           =state.to
         %td
           =state.source
+        %td{:class => "date"}
+          =state.created_at.strftime "%Y-%m-%d %I:%M:%S %z"
