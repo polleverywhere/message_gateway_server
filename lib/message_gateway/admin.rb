@@ -131,6 +131,21 @@ class MessageGateway
         redirect "#{@prefix}/processor/#{name}"
       end
 
+      post "/debug" do
+        # this block is to help you debug your Sender requests: you can see what parameters you are
+        # posting in this block
+
+        puts "Params are:"
+        puts params.inspect
+        puts
+        puts "Request.body:"
+        puts request.body.read
+        puts
+        puts "request.query:"
+        puts request.query_string
+        
+        "OK"
+      end
     end
     
     
