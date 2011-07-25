@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rack", '~> 1.1'
   s.add_dependency "chirpstream"
   s.add_dependency "nokogiri"
-  s.add_dependency "em-http-request", '>= 0.3.0'
+  s.add_dependency "em-http-request"
   s.add_dependency "thin_async", '>= 0.1.1'
   s.add_dependency "http_router", '>= 0.8.10'
   s.add_dependency "em-jack"

@@ -164,9 +164,16 @@ spec/spec_helper.rb defines MessageGateway.default_logger. This object also keep
 
 By default the test suite uses mysql, with username root and no password, to connect to a database named "message_gateway_test"
 
+== Dependancies
+
+This gem currently depends on the em-http-request 1.0 release. As of this writing, em-http-request 1.0 is in pre-release, so you have to install that manually.
+
+You'll need to install this manually.
+
 == Contributing on this gem
 
 This gem is managed via Bundler, which has created the skeleton for us in addition to providing Rake tasks related to installing and releasing the gem.
+
 
 == License
 
