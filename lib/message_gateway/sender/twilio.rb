@@ -15,7 +15,7 @@ class MessageGateway
         twilio_send_url = "https://api.twilio.com/#{API_VERSION}/Accounts/#{@account_sid}/SMS/Messages"
 
         request_object.post( self, twilio_send_url, 
-          :data => { 'Body' => message.body, 
+          :body => { 'Body' => message.body, 
               'From' => message.from || default_from, 'To' => canonicalize_phone_number(message.to) },
           :head => {'authorization' => [@account_sid, @account_token]} )
       end

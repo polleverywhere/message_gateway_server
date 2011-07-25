@@ -7,14 +7,14 @@ class MessageGateway
 
       http.start() do |http|
         puts "about to send to: #{url.path}"
-        puts "posting: #{post_params[:data]}"
+        puts "posting: #{post_params[:body]}"
 
         req = Net::HTTP::Post.new(url.path)
         if post_params[:head]
           req.basic_auth post_params[:head]['authorization'][0], post_params[:head]['authorization'][1]
         end
 
-        req.set_form_data( post_params[:data] )
+        req.set_form_data( post_params[:body] )
         response = http.request(req)
 
         print response.body  # TODO: something better here
