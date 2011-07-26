@@ -12,7 +12,7 @@ class MessageGateway
       end
 
       def send(message)
-        defer_success_on_200(EM::HttpRequest.new(endpoint).post :data => {
+        request_object.post(self, endpoint, :data => {
          'CampaignID'   => @campaign_id,
          'Username'     => @username,
          'Password'     => @password,

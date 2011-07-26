@@ -5,7 +5,7 @@ class MessageGateway
       
       attr_accessor :username, :password, :shortcode, :profile_id
       def send(message)
-        defer_success_on_200(EM::HttpRequest.new('http://xml5.us.mblox.com:8180/send').post :data => { 'XMLDATA' => build(message) })
+        request_object.post(self, 'http://xml5.us.mblox.com:8180/send', :data => { 'XMLDATA' => build(message) })
       end
 
       def build(message)
