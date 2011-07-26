@@ -35,8 +35,9 @@ class MessageGateway
           t.text :error, :null => true
           t.string :status, :limit => 30, :null => false
           t.datetime :created_at
-          t.add_index :state_id
         end
+
+        add_index "events", "state_id"
 
         create_table :states, :force => force do |t|
           t.string :status, :limit => 30, :null => false
@@ -47,10 +48,11 @@ class MessageGateway
           t.string :extra
           t.integer :reply_to_id, :null => true
           t.timestamps :create_at
-          t.add_index :status
-          t.add_index :source
-          t.add_index :to
         end
+
+        add_index "states", "status"
+        add_index "states", "source"
+        add_index "states", "to"
       end
     end
     
