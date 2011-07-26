@@ -5,6 +5,11 @@ class MessageGateway
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true if send_url =~ /https/
 
+      # Allow the caller to use the the older EM::HttpRequest API (which uses the data key)
+      if post_params[:body].nil? && post_params[:data]
+        post_params[:body] = post_params[:data]
+      end
+
       http.start() do |http|
         puts "about to send to: #{url.path}"
         puts "posting: #{post_params[:body]}"
