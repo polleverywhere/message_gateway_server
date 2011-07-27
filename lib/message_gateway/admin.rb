@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'will_paginate/view_helpers'
+require 'will_paginate/view_helpers/base'
 require 'padrino-helpers'
+require 'will_paginate'
 
 class MessageGateway
   class Admin
@@ -27,6 +29,7 @@ class MessageGateway
       set :dump_errors, true
       enable :sessions
       
+      attr_reader :prefix
       layout :application
 
       def url_for(*args)
@@ -34,6 +37,7 @@ class MessageGateway
       end
       
       include WillPaginate::ViewHelpers
+      helpers WillPaginate::ViewHelpers::Base
 
       before do
         @gateway = env['message_gateway']
@@ -149,5 +153,24 @@ class MessageGateway
     end
     
     
+  end
+end
+
+require 'will_paginate/view_helpers/link_renderer'
+
+WillPaginate::ViewHelpers::LinkRenderer.class_eval do
+  protected
+  def url(page)
+    url = "/#{@template.prefix}#{@template.request.path}"
+    if page == 1
+      # strip out page param and trailing ? if it exists
+      url.gsub(/page=[0-9]+/, '').gsub(/\?$/, '')
+    else
+      if url =~ /page=[0-9]+/
+        url.gsub(/page=[0-9]+/, "page=#{page}")
+      else
+        url + "?page=#{page}"
+      end      
+    end
   end
 end
