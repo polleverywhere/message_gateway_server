@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "json"
   s.add_dependency "mysqlplus"
   s.add_dependency "thin", "~> 1.2.11"
-  s.add_dependency "will_paginate", "~> 2.3.11"
+  s.add_dependency "will_paginate", "~> 3.0pre"
   s.add_dependency "haml"
   s.add_dependency "padrino", "~> 0.10.0"
   s.add_dependency "sinatra", "~> 1.2.6"
@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rack", '~> 1.1'
   s.add_dependency "chirpstream"
   s.add_dependency "nokogiri"
-  s.add_dependency "em-http-request"
+  s.add_dependency "em-http-request", "~> 1.0.0.beta.4"
   s.add_dependency "thin_async", '>= 0.1.1'
   s.add_dependency "http_router", '>= 0.8.10'
   s.add_dependency "em-jack"
