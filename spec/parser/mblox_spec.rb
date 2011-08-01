@@ -23,8 +23,8 @@ describe MessageGateway::Parser::Mblox do
       <Tariff>150</Tariff>
       <SessionId>SessionID</SessionId>
       <Tags>
-        <Tag Name=”Number”>12</Tag>
-        <Tag Name=”City”>Rome</Tag>
+        <Tag Name="Number">12</Tag>
+        <Tag Name="City">Rome</Tag>
       </Tags>
     </Response>
   </ResponseList>

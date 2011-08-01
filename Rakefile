@@ -1,10 +1,11 @@
 require 'rubygems'
-require 'spec'
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_opts ||= []
-  t.spec_opts << "--options" << "spec/spec.opts"
-  t.spec_files = FileList['spec/**/*_spec.rb']
+require 'rspec'
+require "rspec/core/rake_task" # RSpec 2.0
+
+# RSpec 2.0
+RSpec::Core::RakeTask.new(:core) do |spec|
+  #spec.pattern = 'spec/**/*_spec.rb'
+  spec.rspec_opts = ['--backtrace']
 end
 
 require 'code_stats'

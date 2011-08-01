@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency "eventmachine"
 
   s.add_development_dependency "bundler", "~> 1.0.15"
-  s.add_development_dependency "em-spec"
+  s.add_development_dependency "freegenie-em-spec" #freegenie's fork includes support for Rspec 2
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
   s.add_development_dependency "rspec"
