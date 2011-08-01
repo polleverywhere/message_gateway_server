@@ -64,6 +64,10 @@ class MessageGateway
       defer(http) { http.response_header.status == 200 }
     end
 
+    def defer_success_on_201(http)
+      defer(http) { http.response_header.status == 201 }
+    end
+
     def add_errback(http)
       http.errback do |err|
         # logging ERROR
