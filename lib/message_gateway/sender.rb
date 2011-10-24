@@ -25,7 +25,7 @@ class MessageGateway
   #
   class Sender
     include Logging
-    
+
     autoload :Celltrust,     'message_gateway/sender/celltrust'
     autoload :Clickatell,    'message_gateway/sender/clickatell'
     autoload :Mblox,         'message_gateway/sender/mblox'
@@ -33,7 +33,6 @@ class MessageGateway
     autoload :Opera,         'message_gateway/sender/opera'
     autoload :Twilio,        'message_gateway/sender/twilio'
     autoload :Txtnation,     'message_gateway/sender/txtnation'
-    autoload :UnwiredAppeal, 'message_gateway/sender/unwired_appeal'
     autoload :Smtp,          'message_gateway/sender/smtp'
 
     attr_accessor :name, :from, :default_from, :request_style
@@ -73,12 +72,12 @@ class MessageGateway
         # logging ERROR
       end
     end
-    
+
     def call(message)
       verify
       send(message)
     end
-    
+
     def defer(http, &blk)
       d = EM::DefaultDeferrable.new
       http.callback { blk.call ? d.succeed : d.fail("#{http.response_header.status}\n#{http.response}") }
@@ -94,7 +93,7 @@ class MessageGateway
   #
   # To configure this: in your gateway.outbound block in your rackup file, set the request_style attribute
   # to the class_name which you want to use.
-  # 
+  #
   # For example:
   # gateway.outbound(...) do |out|
   #   out.request_style = "sync_request"
