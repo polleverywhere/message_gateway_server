@@ -23,7 +23,7 @@ class MessageGateway
     class SinatraApp < Sinatra::Base
 
       register Padrino::Helpers
-      register WillPaginate::Sinatra::Helpers
+      include WillPaginate::Sinatra::Helpers
 
       set :root, File.join(File.dirname(__FILE__), 'admin')
       set :logging, true
