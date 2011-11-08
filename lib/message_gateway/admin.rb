@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'padrino-helpers'
 require 'will_paginate'
+require 'will_paginate/active_record'
 
 class MessageGateway
   class Admin
