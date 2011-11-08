@@ -1,6 +1,4 @@
 require 'sinatra'
-require 'will_paginate/view_helpers'
-require 'will_paginate/view_helpers/base'
 require 'padrino-helpers'
 require 'will_paginate'
 
@@ -21,21 +19,21 @@ class MessageGateway
     # Define a Sinatra (with Padrino helpers!) app for administrative purposes.
     # Launch this by calling MessageGateway#admin (have your rackup file in place!)
     class SinatraApp < Sinatra::Base
-      
+
       register Padrino::Helpers
-      
+
       set :root, File.join(File.dirname(__FILE__), 'admin')
       set :logging, true
       set :dump_errors, true
       enable :sessions
-      
+
       attr_reader :prefix
       layout :application
 
       def url_for(*args)
         "/#{@prefix}/messages?#{Rack::Utils.build_query(args.last)}"
       end
-      
+
       include WillPaginate::ViewHelpers
       helpers WillPaginate::ViewHelpers::Base
 
@@ -70,7 +68,7 @@ class MessageGateway
         @states = MessageLogger::State.find(:all, :order => "id desc", :limit => 30)
         haml :log
       end
-      
+
       get '/messages/:id' do
         @state = MessageLogger::State.find(params[:id])
         haml :message
@@ -80,7 +78,7 @@ class MessageGateway
         @conditions = {:per_page => 30, :order => 'id DESC'}
         @conditions[:per_page] = Integer(params[:per_page]) if params[:per_page]
         if params[:order]
-          order_parts = params[:order].split 
+          order_parts = params[:order].split
           order_parts[0] = "`#{order_parts[0]}`"
           @conditions[:order] = order_parts.join(' ')
         end
@@ -100,7 +98,7 @@ class MessageGateway
           @description << " " << parts.join(' and ')
         end
         @states = MessageLogger::State.paginate @conditions.merge(:page => params[:page])
-        
+
         if params[:reply]
           @states.each do |state|
             if state.mt?
@@ -115,7 +113,7 @@ class MessageGateway
           haml :messages
         end
       end
-      
+
       get '/processor/:name' do |name|
         @processor = @gateway.processors[name] or raise
         @events = MessageLogger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? order by events.id desc limit 30", name])
@@ -147,12 +145,12 @@ class MessageGateway
         puts
         puts "request.query:"
         puts request.query_string
-        
+
         "OK"
       end
     end
-    
-    
+
+
   end
 end
 
@@ -170,7 +168,7 @@ WillPaginate::ViewHelpers::LinkRenderer.class_eval do
         url.gsub(/page=[0-9]+/, "page=#{page}")
       else
         url + "?page=#{page}"
-      end      
+      end
     end
   end
 end
