@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "json"
   s.add_dependency "mysqlplus"
   s.add_dependency "thin", "~> 1.2.11"
-  s.add_dependency "will_paginate", "~> 3.0pre"
+  s.add_dependency "will_paginate", "~> 3.0.2"
   s.add_dependency "haml"
   s.add_dependency "padrino", "~> 0.10.0"
   s.add_dependency "sinatra", "~> 1.2.6"
