@@ -34,9 +34,6 @@ class MessageGateway
         "/#{@prefix}/messages?#{Rack::Utils.build_query(args.last)}"
       end
 
-      include WillPaginate::ViewHelpers
-      helpers WillPaginate::ViewHelpers::Base
-
       before do
         @gateway = env['message_gateway']
         @prefix = '/message_gateway'
