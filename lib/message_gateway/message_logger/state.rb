@@ -1,5 +1,4 @@
 require 'digest/md5'
-require 'ruby-debug19'
 
 class MessageGateway
   class MessageLogger
