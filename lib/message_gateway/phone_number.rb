@@ -1,8 +1,11 @@
 class MessageGateway
   module PhoneNumber
     def sanitize_phone_number(phone)
-      sanitized_phone = phone.gsub(/\D/, '') if phone
-      sanitized_phone.empty? ? phone : sanitized_phone
+      if phone
+        sanitized_phone = phone.gsub(/\D/, '')
+        output = sanitized_phone.empty? ? phone : sanitized_phone
+        return output
+      end
     end
 
     def sanitize_us_phone_number(phone)
