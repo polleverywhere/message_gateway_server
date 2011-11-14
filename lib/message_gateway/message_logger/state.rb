@@ -1,4 +1,6 @@
 require 'digest/md5'
+require 'ruby-debug19'
+
 class MessageGateway
   class MessageLogger
     class State < ActiveRecord::Base
@@ -36,6 +38,8 @@ class MessageGateway
           state.reply_to_id = message.in_reply_to if message.in_reply_to
           state.extra = message.extra && message.extra.to_json
 
+          debugger
+          0
           state.carrier_id = message.carrier_id if message.respond_to?(:carrier_id)
         end
         state.update_status(message, status, err)
