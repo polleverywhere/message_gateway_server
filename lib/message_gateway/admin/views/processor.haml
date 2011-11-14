@@ -3,7 +3,7 @@
 
 %p
   Jobs waiting to be processed: <strong>#{@processor.waiting_jobs}</strong>
-  
+
 -if @processor.parser_instance
   %p
     Parsing with <strong>#{@processor.parser_instance.class}</strong> which reports it's successfully processed <span style="background-color:green">#{@processor.parser_instance.success_count}</span> messages and unsuccessfully processed <span style="background-color:red">#{@processor.parser_instance.failure_count}</span> messages.
@@ -35,7 +35,8 @@
           %td
             =event.created_at
           %td(class="#{event.status}")
-            =event.status
+            %a(href="/#{@prefix}/messages/#{event.state.id}")
+              =event.status
           %td
             =event.state.from
           %td

@@ -11,7 +11,7 @@ class MessageGateway
       end
 
       def to_message
-        data = {'body' => body, 'to' => to, 'from' => from, 'source' => source}
+        data = {'body' => body, 'to' => to, 'from' => from, 'source' => source, 'carrier_id' => carrier_id}
         data.merge!(JSON.parse(extra)) if extra
         message = MessageGateway::Message.from_hash(data)
         message.id = id
@@ -35,6 +35,8 @@ class MessageGateway
           state.source = message.source
           state.reply_to_id = message.in_reply_to if message.in_reply_to
           state.extra = message.extra && message.extra.to_json
+
+          state.carrier_id = message.carrier_id if message.respond_to?(:carrier_id)
         end
         state.update_status(message, status, err)
         state
@@ -46,7 +48,7 @@ class MessageGateway
         message.id = id
         events.create(:status => status, :error => err).save!
       end
-      
+
       def self.find_extra_for_number(number)
         find(:first, :conditions => ["state is not null and to = ?", sanitize_phone_number(number)], :order => 'id desc')
       end

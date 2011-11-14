@@ -44,6 +44,7 @@ class MessageGateway
           t.string :from, :null => false
           t.string :to, :null => false
           t.string :body, :null => false
+          t.string :carrier_id, :null => true
           t.string :source, :null => false
           t.string :extra
           t.integer :reply_to_id, :null => true
@@ -55,7 +56,7 @@ class MessageGateway
         add_index "states", "to"
       end
     end
-    
+
     def record_status(message, status, err = nil)
       @statuses << status.to_s unless @statuses.include?(status.to_s)
       @sources << message.source unless @sources.include?(message.source)
