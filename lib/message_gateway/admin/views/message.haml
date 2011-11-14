@@ -1,6 +1,6 @@
 %h1
   Message - #{@state.id}
-  
+
 %dl
   %dt Status
   %dd #{@state.status}
@@ -21,6 +21,8 @@
     %dt Replied from
     %dd
       %a(href="/#{@prefix}/messages/#{@state.reply.id}") Message #{@state.reply.id}
+  %dt Carrier ID (Carrier Specific)
+  %dd #{@state.carrier_id}
 
 %h2
   Events
