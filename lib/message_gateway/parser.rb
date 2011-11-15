@@ -8,20 +8,21 @@ class MessageGateway
     include PhoneNumber
     include Logging
 
-    autoload :Base,          'message_gateway/parser/base'
-    autoload :CarrierAware,  'message_gateway/parser/carrier_aware'
-    autoload :Simple,        'message_gateway/parser/simple'
-    autoload :SimpleCarrier, 'message_gateway/parser/simple_carrier'
+    autoload  :Base,             'message_gateway/parser/base'
+    autoload  :CarrierAware,     'message_gateway/parser/carrier_aware'
+    autoload  :Simple,           'message_gateway/parser/simple'
+    autoload  :SimpleCarrier,    'message_gateway/parser/simple_carrier'
 
     # impls
-    autoload :Celltrust,     'message_gateway/parser/celltrust'
-    autoload :CelltrustHttp, 'message_gateway/parser/celltrust_http'
-    autoload :Clickatell,    'message_gateway/parser/clickatell'
-    autoload :Mblox,         'message_gateway/parser/mblox'
-    autoload :Opera,         'message_gateway/parser/opera'
-    autoload :Txtnation,     'message_gateway/parser/txtnation'
-    autoload :Twilio,        'message_gateway/parser/twilio'
-    autoload :Textmarks,     'message_gateway/parser/textmarks'
+    autoload  :Celltrust,        'message_gateway/parser/celltrust'
+    autoload  :CelltrustHttp,    'message_gateway/parser/celltrust_http'
+    autoload  :Clickatell,       'message_gateway/parser/clickatell'
+    autoload  :Mblox,            'message_gateway/parser/mblox'
+    autoload  :MobileMessenger,  'message_gateway/parser/mobile_messenger'
+    autoload  :Opera,            'message_gateway/parser/opera'
+    autoload  :Txtnation,        'message_gateway/parser/txtnation'
+    autoload  :Twilio,           'message_gateway/parser/twilio'
+    autoload  :Textmarks,        'message_gateway/parser/textmarks'
 
     attr_accessor :processor
 
