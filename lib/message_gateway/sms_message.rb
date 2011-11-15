@@ -8,8 +8,6 @@ class MessageGateway
     end
 
     def self.build_from_hash(hash)
-      debugger
-      0
       new_message = super(hash)
       new_message.carrier_id = hash['carrier_id']
       new_message
