@@ -63,7 +63,7 @@ class MessageGateway
       add_carrier_mapping  :verizon_wireless,                             '4'
       add_carrier_mapping  :sasktel_mobility,                             '54'
       add_carrier_mapping  :enid_pioneer_telephone_coop,                  '140'
-      add_carrier_mapping  :3_rivers_pcs,                                 '11'
+      add_carrier_mapping  :three_rivers_pcs,                                 '11'
       add_carrier_mapping  :sprint_pcs,                                   '5'
       add_carrier_mapping  :fmtc_farmers_mutual_telephone_company,        '141'
       add_carrier_mapping  :advantage_cellular,                           '12'
