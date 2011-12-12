@@ -51,6 +51,6 @@ task :print_known_carriers do
 	require './lib/message_gateway/util/carrier'
 
   MessageGateway::Util::Carrier::CarrierInfo.carrier_mapping.each_pair do |key, value|
-    puts ":#{key}\t#{value.name}"
+    puts "#{key}\t#{value.name}"
   end
 end
