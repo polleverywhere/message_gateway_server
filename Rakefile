@@ -2,6 +2,8 @@ require 'rubygems'
 require 'rspec'
 require "rspec/core/rake_task" # RSpec 2.0
 
+require 'ruby-debug'
+
 # RSpec 2.0
 RSpec::Core::RakeTask.new(:core) do |spec|
   #spec.pattern = 'spec/**/*_spec.rb'
@@ -40,5 +42,15 @@ task :find_orphaned_mappings do
     		end
     	end
     end
+  end
+end
+
+desc "Prints the known carrier codes - their symbol and their name"
+task :print_known_carriers do
+	require './lib/message_gateway/phone_number'
+	require './lib/message_gateway/util/carrier'
+
+  MessageGateway::Util::Carrier::CarrierInfo.carrier_mapping.each_pair do |key, value|
+    puts ":#{key}\t#{value.name}"
   end
 end

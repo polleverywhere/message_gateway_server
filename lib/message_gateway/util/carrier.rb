@@ -115,6 +115,10 @@ class MessageGateway
           CarrierMapping[id.to_s] = CarrierInfoWithEmail.new(id, name, email)
         end
 
+        def self.carrier_mapping
+          CarrierMapping
+        end
+
         def self.register_with_short_email(id, name, email)
           CarrierMapping[id.to_s] = CarrierInfoWithShorterEmail.new(id, name, email)
         end
