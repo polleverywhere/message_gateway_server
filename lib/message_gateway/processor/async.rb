@@ -4,9 +4,9 @@ class MessageGateway
 
       include BeanstalkClient
       include Util::TrafficLights
-      
+
       attr_reader :waiting_jobs
-      
+
       def init
         super
         @beanstalk_producer_client ||= beanstalk_connection
@@ -21,11 +21,11 @@ class MessageGateway
           end
         end
       end
-      
+
       def beanstalk_dispatcher_producer_client
         @beanstalk_dispatcher_producer_client ||= beanstalk_connection(gateway.dispatchers[name].tube_name)
       end
-      
+
       def tube_name
         gateway.tube_for_name(name, 'incoming')
       end
@@ -118,7 +118,7 @@ class MessageGateway
           end
         end
       end
-      
+
     end
   end
 end
