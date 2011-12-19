@@ -166,9 +166,8 @@ By default the test suite uses mysql, with username root and no password, to con
 
 == Dependancies
 
-This gem currently depends on the em-http-request 1.0 release. As of this writing, em-http-request 1.0 is in pre-release, so you have to install that manually.
+Because of the high dependance on EventMachine, Message Gateway assumes your server is an EventMachine compliant server (aka: thin), *AND* has already started the EventMachine reactor.
 
-You'll need to install this manually.
 
 == Contributing on this gem
 
