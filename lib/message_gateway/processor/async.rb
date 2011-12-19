@@ -34,8 +34,15 @@ class MessageGateway
       # In this class's implementation, we shove the message on a beanstalk and return immediately
       # (Async#run processes these)
       def call(env)
-        if message = @parser_instance.call(env)
+        if message = @parser_instance.call(env)  # @parser_instance is the parser we defined in our Rackup file. (So, Twilio's parser, or something)
+
+          # message is now the processed object - all the parameters that the MA has
+          # passed us are now normalized into our structure
+
           response = Thin::AsyncResponse.new(env)
+          # now, shove that normalized message into the outbound message queue and
+          # send a message back to the MA. This lets us get BACK TO WORK (responding to messages)
+
           @beanstalk_producer_client.put(message.to_hash.to_json) {
             response.status = 200
             response << 'OK'

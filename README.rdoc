@@ -168,6 +168,19 @@ By default the test suite uses mysql, with username root and no password, to con
 
 Because of the high dependance on EventMachine, Message Gateway assumes your server is an EventMachine compliant server (aka: thin), *AND* has already started the EventMachine reactor.
 
+== Error Handling
+
+If you want, I suggest setting up Airbrake for this app.
+
+In your rackup file, configure Airbrake as the documentation says, then
+
+	use Airbrake::Rack
+
+This can go outside the HttpRouter.new block.
+
+This Airbrake middleware will catch errors going into processing. With the Asynchronous processor, this includes breaking the message apart into Message Gateway's normalized message format. However, sending messages to the message received application callback is *not* part of this request/response cycle.
+
+Errors from the message received application callback will be logged as an event (thus allowing the incoming SMS message to be replayed).
 
 == Contributing on this gem
 
