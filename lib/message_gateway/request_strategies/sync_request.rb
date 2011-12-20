@@ -25,5 +25,21 @@ class MessageGateway
         print response.body  # TODO: something better here
       end
     end
+
+
+    def get(sender_subclass, send_url, get_params)
+      url = URI.parse(send_url)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if send_url =~ /https/
+
+      http.start() do |http|
+        request = Net::HTTP::get.new(url.domain,
+            url.path.concat(params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&'))
+        )
+
+        response = http.request request
+        print response.body # TODO: something better here!!
+      end
+    end
   end
 end
