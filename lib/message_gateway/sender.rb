@@ -85,25 +85,39 @@ class MessageGateway
       d
     end
 
-  # Retrieve the object you should use to make a request to the Mobile Agreegator
-  # (if you are implementing a Sender subclass)
-  #
-  # Certain situations (testing, initial implementation) are easier implemented
-  # by sending the post synchronously, for example, or logging the params to a database
-  #
-  # To configure this: in your gateway.outbound block in your rackup file, set the request_style attribute
-  # to the class_name which you want to use.
-  #
-  # For example:
-  # gateway.outbound(...) do |out|
-  #   out.request_style = "sync_request"
-  # end
-  #
-  # Will use MessageGatway::SyncRequest - your requests to the mobile aggregator will
-  # block. (Useful for testing/development, an anti-pattern for production)
-  #
-  # Defaults to returning a MessageGatway::AsyncRequest instance
-  def request_object
+
+    # When the GET/POST from the MA comes back (in the case of MT messages)
+    # Message Gateway will consider success based on the response.
+    # This method returns a symbol which points to one of the defer_success_on_*
+    # methods above.
+    #
+    # The default implementation of this method takes http status code 200 to be success.
+    # If your mobile aggregator returns a different value (such as the more RESTful 201 - resource created)
+    # your sender subclass can override this method
+    def defer_callback_method()
+      return :defer_success_on_200
+    end
+
+
+    # Retrieve the object you should use to make a request to the Mobile Agreegator
+    # (if you are implementing a Sender subclass)
+    #
+    # Certain situations (testing, initial implementation) are easier implemented
+    # by sending the post synchronously, for example, or logging the params to a database
+    #
+    # To configure this: in your gateway.outbound block in your rackup file, set the request_style attribute
+    # to the class_name which you want to use.
+    #
+    # For example:
+    # gateway.outbound(...) do |out|
+    #   out.request_style = "sync_request"
+    # end
+    #
+    # Will use MessageGatway::SyncRequest - your requests to the mobile aggregator will
+    # block. (Useful for testing/development, an anti-pattern for production)
+    #
+    # Defaults to returning a MessageGatway::AsyncRequest instance
+    def request_object
       MessageGateway.const_get( MessageGateway::Util.make_const(self.request_style) ).new
     end
   end

@@ -14,15 +14,22 @@ class MessageGateway
       def send(message)
         twilio_send_url = "https://api.twilio.com/#{API_VERSION}/Accounts/#{@account_sid}/SMS/Messages"
 
-        request_object.post( self, twilio_send_url, 
-          :body => { 'Body' => message.body, 
+        request_object.post( self, twilio_send_url,
+          :body => { 'Body' => message.body,
               'From' => message.from || default_from, 'To' => canonicalize_phone_number(message.to) },
           :head => {'authorization' => [@account_sid, @account_token]} )
       end
 
+
       def verify
-        
+
       end
+
+
+      def defer_callback_method
+        return :defer_success_on_201
+      end
+
     end # class Twilio
   end # class Sender
 end # class MessageGateway

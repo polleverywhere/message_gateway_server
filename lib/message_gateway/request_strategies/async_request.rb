@@ -12,7 +12,8 @@ class MessageGateway
         post_params[:body] = post_params[:data]
       end
 
-      sender_subclass.defer_success_on_201(  EM::HttpRequest.new(send_url).post(post_params) )
+      defer_success_sym = sender_subclass.defer_callback_method
+      sender_subclass.send(defer_success_sym, EM::HttpRequest.new(send_url).post(post_params) )
     end
   end
 end
