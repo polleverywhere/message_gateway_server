@@ -24,6 +24,7 @@ class MessageGateway
     autoload  :Twilio,           'message_gateway/parser/twilio'
     autoload  :Textmarks,        'message_gateway/parser/textmarks'
     autoload  :UnwiredAppeal,    'message_gateway/parser/unwired_appeal'
+    autoload  :MxTelecom,        'message_gateway/parser/mx_telecom'
 
     attr_accessor :processor
 
