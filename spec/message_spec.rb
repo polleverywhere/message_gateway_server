@@ -18,17 +18,17 @@ describe MessageGateway::Message do
     it "should have in_reply_to" do; @message.in_reply_to.should == 1;    end
   end
 end
-  
+
 describe MessageGateway::SmsMessage do
   it "should to_hash" do
     message = MessageGateway::SmsMessage.new("from", "to", "body", "source", 1)
     message.carrier_id = :verizon
-    
+
     message.to_hash.should ==
       {:from => 'from', :to => 'to', :body => 'body', :source => 'source', :in_reply_to => 1, "carrier_id" => :verizon}
   end
 
-  
+
   context "should from_hash" do
     before(:each) do
       @message = MessageGateway::Message.from_hash('from' => 'from', 'to' => 'to', 'body' => 'body', 'source' => 'source', 'in_reply_to' => 1)
@@ -41,4 +41,4 @@ describe MessageGateway::SmsMessage do
     it "should have in_reply_to" do; @message.in_reply_to.should == 1;    end
   end
 end
-  
+
