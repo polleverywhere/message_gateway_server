@@ -64,7 +64,7 @@ class MessageGateway
       add_carrier_mapping  :united_wireless,                              "united"
       add_carrier_mapping  :ecit,                                         "cellular_one_east_central"
       add_carrier_mapping  :east_kentucky,                                "East_Kentucky"
-      add_carrier_mapping  :pcs,                                          '11'
+      add_carrier_mapping  :sprint_pcs,                                   '11'
       add_carrier_mapping  :sprint_pcs,                                   '5'
       add_carrier_mapping  :fmtc,                                         '141'
       add_carrier_mapping  :advantage_cellular,                           '12'
