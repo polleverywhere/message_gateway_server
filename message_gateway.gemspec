@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "thin", "~> 1.2.11"
   s.add_dependency "will_paginate", "~> 3.0.2"
   s.add_dependency "haml"
-  s.add_dependency "padrino", "~> 0.10.0"
+  s.add_dependency "padrino", "= 0.10.1"
   s.add_dependency "sinatra", "~> 1.2.6"
 
   s.add_dependency "rack", '~> 1.1'
