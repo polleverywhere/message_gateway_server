@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MessageGateway::Message do
   it "should to_hash" do
     MessageGateway::Message.new("from", "to", "body", "source", 1).to_hash.should ==
-      {'from' => 'from', 'to' => 'to', 'body' => 'body', 'source' => 'source', 'in_reply_to' => 1}
+      {:from => 'from', :to => 'to', :body => 'body', :source => 'source', :in_reply_to => 1}
   end
 
   context "should from_hash" do
@@ -25,7 +25,7 @@ describe MessageGateway::SmsMessage do
     message.carrier_id = :verizon
     
     message.to_hash.should ==
-      {'from' => 'from', 'to' => 'to', 'body' => 'body', 'source' => 'source', 'in_reply_to' => 1, 'carrier_id' => :verizon}
+      {:from => 'from', :to => 'to', :body => 'body', :source => 'source', :in_reply_to => 1, "carrier_id" => :verizon}
   end
 
   
