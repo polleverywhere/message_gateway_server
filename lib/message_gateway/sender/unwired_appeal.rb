@@ -1,7 +1,7 @@
 class MessageGateway
   class Sender
 
-    class UnwiredAppeal
+    class UnwiredAppeal < Sender
       include PhoneNumber
 
       attr_accessor :event_id, :password
