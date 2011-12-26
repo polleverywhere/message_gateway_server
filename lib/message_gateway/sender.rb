@@ -29,11 +29,13 @@ class MessageGateway
     autoload :Celltrust,     'message_gateway/sender/celltrust'
     autoload :Clickatell,    'message_gateway/sender/clickatell'
     autoload :Mblox,         'message_gateway/sender/mblox'
+    autoload :MobileMessager, 'message_gateway/sender/mobile_messenger'
     autoload :MxTelecom,     'message_gateway/sender/mx_telecom'
     autoload :Opera,         'message_gateway/sender/opera'
+    autoload :Smtp,          'message_gateway/sender/smtp'
     autoload :Twilio,        'message_gateway/sender/twilio'
     autoload :Txtnation,     'message_gateway/sender/txtnation'
-    autoload :Smtp,          'message_gateway/sender/smtp'
+    autoload :UnwiredAppeal, 'message_gateway/sender/unwired_appeal'
 
     attr_accessor :name, :from, :default_from, :request_style
 
