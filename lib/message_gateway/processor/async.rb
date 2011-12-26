@@ -10,8 +10,18 @@ class MessageGateway
       def init
         super
         @beanstalk_producer_client ||= beanstalk_connection
+            # holds messages that need to be sent to the "message received application callback"
+            # the "in" end of the tube that holds messages awaiting delivery to our main application service
+
         @beanstalk_consumer_client ||= beanstalk_connection
+            # retrieves messages that need to be sent to the "message received application callback"
+            # and sends them to said endpoint
+            # the "out" end of the tub that holds messages awaiting delivery.
+
         @beanstalk_dispatcher_producer_client ||= beanstalk_connection(gateway.dispatchers[name].tube_name)
+            # stores messages that need to be sent back to the mobile aggregator (OK messages and the like)
+            # from the README: "In the asynchronous model, a separate sending processor has to be setup, separate from the endpoint for incoming messages"
+
         EM.next_tick{run}
         @beanstalk_counting_client ||= beanstalk_connection
         @waiting_jobs = 0
@@ -58,6 +68,8 @@ class MessageGateway
         end
       end
 
+      # Called via EventMachine. An infinite loop of our own design
+      # (See init, log_mo_success, log_mo_permanent_failure)
       def run
         @beanstalk_consumer_client.reserve do |job|
           @job = job
@@ -85,7 +97,7 @@ class MessageGateway
         else
           log_mo_start(message) if count == 0
           EM.next_tick do
-            http = send_message(message)
+            http = send_message(message) # to message received application callback
             http.callback do
               if http.response_header.status == 200
                 reply_body = http.response.strip
