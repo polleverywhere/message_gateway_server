@@ -1,4 +1,5 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+
 require 'message_gateway'
 
 MessageGateway.default_logger = MessageGateway::MessageLogger.new(:adapter => "mysql", :host => "localhost", :database => "message_gateway_test", :username => "root", :password => "")
