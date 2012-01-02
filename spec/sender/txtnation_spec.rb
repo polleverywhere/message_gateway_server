@@ -6,6 +6,7 @@ describe MessageGateway::Sender::Mblox do
     EM::MockHttpRequest.activate!
     EM::MockHttpRequest.pass_through_requests = false
     @sender = MessageGateway::Sender::Txtnation.new
+    @sender.init
     @sender.ekey = 'somekey'
   end
 

@@ -6,6 +6,7 @@ describe MessageGateway::Sender::Opera do
     EM::MockHttpRequest.activate!
     EM::MockHttpRequest.pass_through_requests = false
     @sender = MessageGateway::Sender::Opera.new
+    @sender.init
     @sender.username = 'username'
     @sender.password = 'password'
     @sender.campaign_id = 'campaign_id'

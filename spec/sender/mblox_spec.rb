@@ -6,7 +6,9 @@ describe MessageGateway::Sender::Mblox do
   before(:each) do
     EM::MockHttpRequest.activate!
     EM::MockHttpRequest.pass_through_requests = false
+
     @sender = MessageGateway::Sender::Mblox.new
+    @sender.init
     @sender.username = 'username'
     @sender.password = 'password'
     @sender.shortcode = 'shortcode'
@@ -31,7 +33,7 @@ describe MessageGateway::Sender::Mblox do
       }
     end
   end
-  
+
   it "should build a message" do
     doc = Nokogiri::XML(@sender.build(MessageGateway::Message.new('41414', '12121234123', "body", 'mblox')))
     doc.xpath('//NotificationRequest/NotificationList/Notification/Message').inner_text.should == 'body'

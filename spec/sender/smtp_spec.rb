@@ -5,6 +5,7 @@ require 'mocha'
 describe MessageGateway::Sender::Smtp do
   before(:each) do
     @sender = MessageGateway::Sender::Smtp.new
+    @sender.init
     @sender.opts = {}
     defer = EM::DefaultDeferrable.new
     defer.succeed

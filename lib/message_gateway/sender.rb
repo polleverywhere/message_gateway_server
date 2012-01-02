@@ -39,12 +39,18 @@ class MessageGateway
 
     attr_accessor :name, :from, :default_from, :request_style
 
+    # No, this is NOT a misspelling of "initialize", no it is not us trying to alias
+    # a constructor, NO, this is not some magic we are doing
+    #
+    # Pretend you don't know anything about Resource Acquisition Is Initialization
+    # (<http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization>) - aka
+    # "I should initialize my objects in the constructor" and repeat with me now:
+    #
+    # "After I construct A Sender or Sender Subclass, I must call init"
     def init
       yield self if block_given?
 
-      if self.request_style == nil
-        self.request_style = "async_request"
-      end
+      self.request_style = "async_request" if self.request_style.nil?
     end
 
     def start
