@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "dirge"
   s.add_development_dependency "code_stats"
   s.add_development_dependency "ruby-debug19"
+  s.add_development_dependency "webmock", "~> 1.7.8"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}
