@@ -4,7 +4,7 @@ PATH
     message_gateway (0.0.3)
       activerecord (~> 3.0.9)
       chirpstream
-      em-http-request (~> 1.0.0.beta.4)
+      em-http-request (~> 1.0.0)
       em-jack
       eventmachine
       haml
