@@ -1,8 +1,10 @@
+require 'builder'
+
 class MessageGateway
   class Sender
     class Mblox < Sender
       include PhoneNumber
-      
+
       attr_accessor :username, :password, :shortcode, :profile_id
       def send(message)
         request_object.post(self, 'http://xml5.us.mblox.com:8180/send', :data => { 'XMLDATA' => build(message) })
