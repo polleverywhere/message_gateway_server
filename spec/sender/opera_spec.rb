@@ -3,8 +3,6 @@ require 'dirge'
 
 describe MessageGateway::Sender::Opera do
   before(:each) do
-    EM::MockHttpRequest.activate!
-    EM::MockHttpRequest.pass_through_requests = false
     @sender = MessageGateway::Sender::Opera.new
     @sender.init
     @sender.username = 'username'
@@ -13,13 +11,13 @@ describe MessageGateway::Sender::Opera do
     @sender.endpoint = 'http://thiismyendpoint:8080/'
   end
 
-  after(:each) do
-    EM::MockHttpRequest.deactivate!
-  end
 
   it "should send a message" do
     EM.run do
-      EM::MockHttpRequest.register_file("http://thiismyendpoint:8080/", :post, ~'../processor/fixtures/twitter/send.txt')
+      stub_request(:post, "http://thiismyendpoint:8080/")
+          .to_return( :body => file_obj_for('processor/fixtures/twitter/send.txt'), :status => 200)
+
+      #EM::MockHttpRequest.register_file(, :post, ~)
       message = MessageGateway::SmsMessage.new('from', 'to', "body", 'mblox')
       message.carrier_id = :ireland_3
       defer = @sender.call(message)

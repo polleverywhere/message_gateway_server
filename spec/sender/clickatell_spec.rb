@@ -3,21 +3,20 @@ require 'dirge'
 
 describe MessageGateway::Sender::Clickatell do
   before(:each) do
-    EM::MockHttpRequest.activate!
-    EM::MockHttpRequest.pass_through_requests = false
+    stub_request(:any,
+      "http://api.clickatell.com:80/http/sendmsg?mo=1&api_id=api_id&from=from&text=body&to=to&password=password&user=login")
+      .to_return( :body => file_obj_for('processor/fixtures/twitter/send.txt') )
+
     @sender = MessageGateway::Sender::Clickatell.new
+    @sender.init
     @sender.api_id = 'api_id'
     @sender.login = 'login'
     @sender.password = 'password'
   end
 
-  after(:each) do
-    EM::MockHttpRequest.deactivate!
-  end
 
   it "should send a message" do
     EM.run do
-      EM::MockHttpRequest.register_file("http://api.clickatell.com:80/http/sendmsg?mo=1&api_id=api_id&from=from&text=body&to=to&password=password&user=login", :get, ~'../processor/fixtures/twitter/send.txt')
       defer = @sender.call(MessageGateway::Message.new('from', 'to', "body", 'clickatell'))
       defer.callback {
         1.should == 1

@@ -1,22 +1,25 @@
 require 'spec_helper'
 require 'dirge'
 
-describe MessageGateway::Sender::Mblox do
+describe MessageGateway::Sender::Txtnation do
   before(:each) do
-    EM::MockHttpRequest.activate!
-    EM::MockHttpRequest.pass_through_requests = false
+    #EM::MockHttpRequest.activate!
+    #EM::MockHttpRequest.pass_through_requests = false
+
+    stub_request(:any,
+        "http://client.txtnation.com:80/mbill.php")
+        .to_return( :body => file_obj_for('processor/fixtures/twitter/send.txt'), :status => 200 )
+
     @sender = MessageGateway::Sender::Txtnation.new
     @sender.init
     @sender.ekey = 'somekey'
+
+    @sender.request_style.should == "async_request"
   end
 
-  after(:each) do
-    EM::MockHttpRequest.deactivate!
-  end
 
   it "should send a message" do
     EM.run do
-      EM::MockHttpRequest.register_file("http://client.txtnation.com:80/mbill.php", :post, ~'../processor/fixtures/twitter/send.txt')
       defer = @sender.call(MessageGateway::Message.new('from', 'to', "body", 'txtnation'))
       defer.callback {
         1.should == 1

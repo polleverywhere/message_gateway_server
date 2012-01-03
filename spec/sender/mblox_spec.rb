@@ -4,9 +4,6 @@ require 'nokogiri'
 
 describe MessageGateway::Sender::Mblox do
   before(:each) do
-    EM::MockHttpRequest.activate!
-    EM::MockHttpRequest.pass_through_requests = false
-
     @sender = MessageGateway::Sender::Mblox.new
     @sender.init
     @sender.username = 'username'
@@ -15,13 +12,11 @@ describe MessageGateway::Sender::Mblox do
     @sender.profile_id = 'profile_id'
   end
 
-  after(:each) do
-    EM::MockHttpRequest.deactivate!
-  end
-
   it "should send a message" do
     EM.run do
-      EM::MockHttpRequest.register_file("http://xml5.us.mblox.com:8180/send", :post, ~'../processor/fixtures/twitter/send.txt')
+      stub_request(:post, "http://xml5.us.mblox.com:8180/send")
+          .to_return( :body => file_obj_for('processor/fixtures/twitter/send.txt'), :status => 200 )
+
       defer = @sender.call(MessageGateway::Message.new('from', 'to', "body", 'mblox'))
       defer.callback {
         1.should == 1

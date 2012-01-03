@@ -1,6 +1,9 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'message_gateway'
+require 'webmock/rspec'
+
+WebMock.allow_net_connect!
 
 MessageGateway.default_logger = MessageGateway::MessageLogger.new(:adapter => "mysql", :host => "localhost", :database => "message_gateway_test", :username => "root", :password => "")
 MessageGateway.default_logger.reset!(true)
@@ -116,14 +119,21 @@ class Chirpstream
   def connect_single(user)
     @user = user
   end
-  
+
   def on_tweet(&proc)
     EM.add_timer(0.3) { proc.call(Chirpstream::Tweet.new(self, sample_tweet_data), @user) }
   end
-  
+
   def on_reconnect
   end
-  
+
   def on_connect
   end
+end
+
+
+def file_obj_for(path_in_spec_folder)
+  spec_folder = File.dirname(__FILE__)
+
+  "#{spec_folder}/#{path_in_spec_folder}"
 end
