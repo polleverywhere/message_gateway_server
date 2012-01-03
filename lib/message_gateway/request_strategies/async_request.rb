@@ -12,13 +12,14 @@ class MessageGateway
       end
 
       defer_success_sym = sender_subclass.defer_callback_method
-      sender_subclass.send(defer_success_sym, EM::HttpRequest.new(send_url).post(post_params) )
+      sender_subclass.__send__(defer_success_sym, EM::HttpRequest.new(send_url).post(post_params) )
+      # use __send__ instead of send to avoid clashing with Sender#send (which is defined)
     end
 
 
     def get(sender_subclass, send_url, get_params)
       defer_success_sym = sender_subclass.defer_callback_method
-      sender_subclass.send(defer_success_sym, EM::HttpRequest.new(send_url).get(post_params) )
+      sender_subclass.__send__(defer_success_sym, EM::HttpRequest.new(send_url).get(post_params) )
     end
   end
 end

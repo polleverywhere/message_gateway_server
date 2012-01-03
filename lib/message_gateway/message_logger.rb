@@ -12,7 +12,7 @@ class MessageGateway
     def initialize(opts)
       ActiveRecord::Base.logger = nil
       ActiveRecord::Base.establish_connection(opts)
-      ActiveRecord::Base.connection.send(:instance_variable_set, :@query_cache_enabled, false)
+      ActiveRecord::Base.connection.__send__(:instance_variable_set, :@query_cache_enabled, false)
       reset! rescue nil
       init_filter_criteria
       puts "Starting logger"
