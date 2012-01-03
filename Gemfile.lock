@@ -3,6 +3,7 @@ PATH
   specs:
     message_gateway (0.0.3)
       activerecord (~> 3.0.9)
+      builder
       chirpstream
       em-http-request (~> 1.0.0)
       em-jack
