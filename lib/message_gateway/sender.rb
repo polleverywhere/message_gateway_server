@@ -47,6 +47,8 @@ class MessageGateway
     # "I should initialize my objects in the constructor" and repeat with me now:
     #
     # "After I construct A Sender or Sender Subclass, I must call init"
+    #
+    # REFACTOR: TODO: RAII is a good idea, we should do it.
     def init
       yield self if block_given?
 
