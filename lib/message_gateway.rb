@@ -21,6 +21,7 @@ class MessageGateway
   autoload :Logging,            'message_gateway/logging'
   autoload :MessageLogger,      'message_gateway/message_logger'
   autoload :Message,            'message_gateway/message'
+  autoload :Middleware,         'message_gateway/middleware'
   autoload :SmsMessage,         'message_gateway/sms_message'
   autoload :PhoneNumber,        'message_gateway/phone_number'
   autoload :AsyncDispatcher,    'message_gateway/async_dispatcher'

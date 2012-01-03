@@ -25,6 +25,8 @@ class MessageGateway
       register Padrino::Helpers
       include WillPaginate::Sinatra::Helpers
 
+      use MessageGateway::Middleware::KeepDbConnectionAlive
+
       set :root, File.join(File.dirname(__FILE__), 'admin')
       set :logging, true
       set :dump_errors, true
