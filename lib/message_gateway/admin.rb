@@ -8,7 +8,7 @@ class MessageGateway
   class Admin
 
     def initialize(gateway, options={})
-      @gateway, @app, @options = gateway, SinatraApp, options
+      @gateway, @app, @options = gateway, ( options[:class] || SinatraApp ), options
       puts "Starting admin console"
     end
 
@@ -30,7 +30,7 @@ class MessageGateway
       set :root, File.join(File.dirname(__FILE__), 'admin')
       set :logging, true
       set :dump_errors, true
-      enable :sessions
+      #enable :sessions
 
       attr_reader :prefix
       layout :application
@@ -44,7 +44,7 @@ class MessageGateway
         @prefix = '/message_gateway'
         @prefix = env['user_options'][:prefix] if env['user_options']
 
-        @notice = session.delete('notice')
+        @notice = session.delete('notice') if session
       end
 
       get '/?' do

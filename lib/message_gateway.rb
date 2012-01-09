@@ -84,7 +84,7 @@ class MessageGateway
 	#
 	# The first param is what type of processing you want (async, or syncronous)
 	# The second params is the name of the endpoint
-	# 
+	#
 	# Take the results from this call and call #parser on it,
 	# to inform message gateway which mobile agreegator to use for
 	# messages coming down this pipe.
@@ -104,8 +104,17 @@ class MessageGateway
 
 	# MessageGateway comes with its own Admin (Sinatra) app, to allow you to see the messages in the que, or even replay messages
 	# This method fires up that application (also depends on your rackup file)
-	# 
+	#
 	# You would use this in your rackup file to connect the sinatra app to a URL path
+	#
+	# Your call to this class should contain the following hash keys and values:
+	#
+	# :prefix <-- what route you want the admin interface to be available at. Example: :prefix => 'admin' puts it on /admin/ (highly recommended)
+	# :class  <-- You can pass your own subclass of MessageGateway::Admin::SinatraApp here. This allows you to add routes to the admin interface, and set up your session properly. (optional, but recommended)
+	#
+	# (On the "set up your session properly" front, if you run across "Rack::Session::Cookie does not handle a nil cookie string" when
+	# using (say) a cluster of thins, try creating a subclass and using Rack::Session::Cookie directly, specifying domain and secret.
+	#
   def admin(options={})
     Admin.new(self, options)
   end
