@@ -18,6 +18,10 @@ class MessageGateway
             # and sends them to said endpoint
             # the "out" end of the tub that holds messages awaiting delivery.
 
+        if gateway.dispatchers[name].nil?
+          raise "You need to define an outbound route for every inbound route you name. Need outbound route for #{name}"
+        end
+
         @beanstalk_dispatcher_producer_client ||= beanstalk_connection(gateway.dispatchers[name].tube_name)
             # stores messages that need to be sent back to the mobile aggregator (OK messages and the like)
             # from the README: "In the asynchronous model, a separate sending processor has to be setup, separate from the endpoint for incoming messages"
