@@ -50,23 +50,49 @@ class MessageGateway
       end
     end
 
-    def self.warn(*args)
-      syslog do |log|
-        log.warn(*args)
+    # syslog works like printf: format strings and all. However,
+    # if you don't know this you're either in for a surprise ("too few arguments")
+    # or a security hole. By default we make our strings safe by escaping the format strings
+    def self.strfsafe(str)
+      if str.respond_to? :gsub
+        return str.gsub /%/, "%%"
+      else
+        return strfsafe(str.inspect)
       end
     end
 
-    def self.info(*args)
+    def self.warn(str)
       syslog do |log|
-        log.info(*args)
+        log.warn( strfsafe(str) )
       end
+
+      nil # avoid leaking the syslog object reference. RPW/ZZ 01-11-2012
     end
 
-    def self.debug(*args)
+    def self.info(arg)
       syslog do |log|
-        log.debug(*args)
+        log.info( strfsafe(arg) )
       end
+
+      nil
     end
+
+    def self.debug(arg)
+      syslog do |log|
+        log.debug( strfsafe(arg) )
+      end
+
+      nil
+    end
+
+    def self.error(str)
+      syslog do |log|
+        log.err( strfsafe(str) )
+      end
+
+      nil
+    end
+
   end
 
 
