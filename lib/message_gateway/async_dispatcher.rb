@@ -6,18 +6,18 @@ class MessageGateway
     include Logging
     include BeanstalkClient
     include Util::TrafficLights
-    
+
     attr_reader :waiting_jobs, :out
 
     MAX_BUCKETS = 300
     MAX_FAILURES = 5
 
     attr_accessor :success_count, :failure_count, :mt_success_buckets
-    
+
     def initialize(tube, out)
       @tube, @out, @success_count, @failure_count, @mt_success_buckets = tube, out, 0, 0, [0]
     end
-    
+
     def start
       raise "You need a beanstalk host" unless gateway.beanstalk_host
       EM.add_periodic_timer(5) do
@@ -33,19 +33,19 @@ class MessageGateway
       end
       process
     end
-    
+
     def tube_name
       @tube
     end
-    
+
     def beanstalk_connection
       EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name)
     end
-    
+
     def inject(message)
       EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name).put({'message' => message.to_hash}.to_json)
     end
-    
+
     def inject_with_delay(message, delay)
       EMJack::Connection.new(:host => gateway.beanstalk_host, :tube => tube_name).put({'message' => message.to_hash}.to_json, :delay => delay)
     end
@@ -79,22 +79,22 @@ class MessageGateway
               }
             end
             send.errback { |err|
-              gateway.log.error err
+              MessageGateway::SysLogger.error err
               log_mt_failure(message, err)
               retry_job(job, parsed_job, message)
             }
           rescue
-            gateway.log.error "#{$!.message}\n#{$!.backtrace.join("\n")}"
+            MessageGateway::SysLogger.error "#{$!.message}\n#{$!.backtrace.join("\n")}"
             retry_job(job, parsed_job, message)
           end
         rescue Message::BadParameter
-          gateway.log.error "Unable to construct message from #{parsed_job['message'].inspect}"
+          MessageGateway::SysLogger.error "Unable to construct message from #{parsed_job['message'].inspect}"
           job.delete
           process
         end
       end
     end
-    
+
     def retry_job(job, parsed_job, message)
       increment_failure
       parsed_job['attempts'] += 1

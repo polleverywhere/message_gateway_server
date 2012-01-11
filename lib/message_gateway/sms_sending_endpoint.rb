@@ -3,13 +3,13 @@ class MessageGateway
   # An interface to send a SMS message out to the mobile agreegator. Follows a C++ functor (or: functional object)
   # style pattern... later called by Rack/HttpRouter.
   class SmsSendingEndpoint
-    
+
     attr_accessor :default_source
-    
+
     include PhoneNumber
 
     INTRA_MESSAGE_DELAY = 30
-    
+
     def initialize(gateway)
       @gateway = gateway
     end
@@ -29,7 +29,7 @@ class MessageGateway
     # for later processing
     def call(env)
       req = Rack::Request.new(env)
-      
+
       req['source'] ||= @default_source
 
       unless source = @gateway.dispatchers[req['source']]
@@ -46,7 +46,7 @@ class MessageGateway
       end
 
       unless req['body'].empty?
-        message_delay = begin 
+        message_delay = begin
           req['intra_message_delay'] ? Integer(req['intra_message_delay']) : INTRA_MESSAGE_DELAY
         rescue ArgumentError
           return Rack::Response.new(["MEASSAGE GATEWAY: intra_message_delay must be an int."], 400).finish
@@ -63,7 +63,7 @@ class MessageGateway
             rescue JSON::ParserError
               [req['body']]
             end
-          
+
             bodies.each_with_index do |body, index|
               source.inject_with_delay(
                 Message.from_hash(data.merge('body' => body)), index * message_delay)
@@ -76,7 +76,7 @@ class MessageGateway
         end
       end
     rescue
-      @gateway.log.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+      MessageGateway::SysLogger.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
       Rack::Response.new(['MEASSAGE GATEWAY: There was a problem'], 500).finish
     end
   end

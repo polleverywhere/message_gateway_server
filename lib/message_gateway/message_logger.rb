@@ -61,10 +61,12 @@ class MessageGateway
       @statuses << status.to_s unless @statuses.include?(status.to_s)
       @sources << message.source unless @sources.include?(message.source)
       state = State.record_status(message, status.to_s, err)
-      state
     rescue
      "#{$!.message}\n#{$!.backtrace.join("\n")}"
-      gateway.log.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+      MessageGateway::SysLogger.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+
+    ensure
+      state
     end
   end
 end
