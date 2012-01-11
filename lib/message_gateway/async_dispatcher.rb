@@ -58,6 +58,15 @@ class MessageGateway
         parsed_job = JSON.parse(job.body)
         parsed_job['attempts'] ||= 0
         begin
+          if parsed_job['message'].blank?
+            # things on the beanstalk queue should always have a message param
+            # - what's wrong with this one? Send it to the logger for a human to check...
+
+            MessageGateway::SysLogger.error "beanstalk item did not have message key. Item follows"
+            MessageGateway::SysLogger.error parsed_job.inspect
+            raise Message::BadParameter
+          end
+
           message = Message.from_hash(parsed_job['message'])
           log_mt_start(message) if parsed_job['attempts'] == 0
           begin
