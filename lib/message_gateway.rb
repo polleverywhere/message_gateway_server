@@ -1,4 +1,6 @@
-require 'logger'
+#require 'logger'
+require 'syslog'
+
 require 'rubygems'
 require 'rack'
 require 'thin'
@@ -32,10 +34,38 @@ class MessageGateway
   autoload :Util,               'message_gateway/util'
 
   attr_reader :name, :beanstalk_host, :dispatchers, :processors, :started_at, :log
+
+
+  module SysLogger
+    def self.warn(**args)
+      syslog do |log|
+        log.warn(**args)
+      end
+
+      def self.info(**args)
+        syslog do |log|
+          log.info(**args)
+        end
+      end
+
+      def self.debug(**args)
+        syslog do |log|
+          log.debug(**args)
+        end
+      end
+    end
+  end
+
+
   attr_accessor :logger, :backend_endpoint
 
   @@default_logger = nil
 
+  # default_logger should be set by your rackup file - create a
+  # MessageGateway::Logger instance (which you point at your MySQL
+  # database). This records events and messages that happen in the system
+  #
+  # For "Ruby logger" style logging, use MessageGateway::SysLogger
   def self.default_logger=(logger)
     @@default_logger = logger
   end
@@ -52,6 +82,7 @@ class MessageGateway
       ActiveRecord::Base.logger = @log
     end
   end
+
 
   # The constructor for the MessageGateway object takes two parameters:
   #  1. The name of the gateway
