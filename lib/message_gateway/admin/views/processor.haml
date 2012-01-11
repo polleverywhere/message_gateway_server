@@ -2,7 +2,7 @@
   ="Processor #{@processor.name.capitalize}"
 
 %p
-  Jobs waiting to be processed: <strong>#{@processor.waiting_jobs}</strong>
+  Jobs waiting to be processed on the beanstalk tube: <strong>#{@processor.waiting_jobs}</strong>. (Total jobs: #{@total_jobs}).
 
 -if @processor.parser_instance
   %p

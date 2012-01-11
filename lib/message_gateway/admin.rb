@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/async'
 require 'padrino-helpers'
 require 'will_paginate'
 require 'will_paginate/active_record'
@@ -23,7 +24,10 @@ class MessageGateway
     class SinatraApp < Sinatra::Base
 
       register Padrino::Helpers
+      register Sinatra::Async
+
       include WillPaginate::Sinatra::Helpers
+
 
       use MessageGateway::Middleware::KeepDbConnectionAlive
 
@@ -116,10 +120,23 @@ class MessageGateway
         end
       end
 
-      get '/processor/:name' do |name|
+      aget '/processor/:name' do |name|
         @processor = @gateway.processors[name] or raise
         @events = MessageLogger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? order by events.id desc limit 30", name])
-        haml :processor
+
+        jack = EMJack::Connection.new(:host => @gateway.beanstalk_host)
+
+        r = jack.stats(:tube, @processor.tube_name)
+        r.callback {|stats|
+          @total_jobs = stats["total-jobs"]
+          body {haml :processor}
+        }
+
+        r.errback {|err|
+          @total_jobs = "(error: #{err})"
+          body {haml :processor}
+        }
+        #haml :processor
       end
 
       get '/dispatcher/:name' do |name|
