@@ -139,14 +139,14 @@ class MessageGateway
         # this block is to help you debug your Sender requests: you can see what parameters you are
         # posting in this block
 
-        puts "Params are:"
-        puts params.inspect
-        puts
-        puts "Request.body:"
-        puts request.body.read
-        puts
-        puts "request.query:"
-        puts request.query_string
+        MessageGateway::SysLogger.info "Params are:"
+        MessageGateway::SysLogger.info params.inspect
+
+        MessageGateway::SysLogger.info "Request.body:"
+        MessageGateway::SysLogger.info request.body.read
+
+        MessageGateway::SysLogger.info "request.query:"
+        MessageGateway::SysLogger.info request.query_string
 
         "OK"
       end

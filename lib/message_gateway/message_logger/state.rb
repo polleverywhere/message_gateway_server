@@ -37,9 +37,10 @@ class MessageGateway
           state.reply_to_id = message.in_reply_to if message.in_reply_to
           state.extra = message.extra && message.extra.to_json
 
-          puts message
-          puts message.respond_to?(:carrier_id)
-          puts message.inspect
+          MessageGateway::SysLogger.info message
+          MessageGateway::SysLogger.info message.respond_to?(:carrier_id)
+          MessageGateway::SysLogger.info message.inspect
+
           state.carrier_id = message.carrier_id if message.respond_to?(:carrier_id)
         end
         state.update_status(message, status, err)

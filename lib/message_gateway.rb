@@ -37,21 +37,34 @@ class MessageGateway
 
 
   module SysLogger
-    def self.warn(**args)
+    def self.syslog(tag="message_gateway", mask='info')
+      #facilty = Syslog.const_get("LOG_#{SYSLOG_TEST_FACILITY}".upcase)
+      level   = Syslog.const_get("LOG_#{mask}".upcase)
+
+      begin
+        Syslog.open(tag, Syslog::LOG_ODELAY | Syslog::LOG_CONS)
+        Syslog.mask = Syslog::LOG_UPTO(level)
+        yield Syslog
+      ensure
+        Syslog.close
+      end
+    end
+
+    def self.warn(*args)
       syslog do |log|
-        log.warn(**args)
+        log.warn(*args)
       end
+    end
 
-      def self.info(**args)
-        syslog do |log|
-          log.info(**args)
-        end
+    def self.info(*args)
+      syslog do |log|
+        log.info(*args)
       end
+    end
 
-      def self.debug(**args)
-        syslog do |log|
-          log.debug(**args)
-        end
+    def self.debug(*args)
+      syslog do |log|
+        log.debug(*args)
       end
     end
   end
@@ -79,7 +92,7 @@ class MessageGateway
 
     if @logger
       @logger.gateway = self if @logger
-      ActiveRecord::Base.logger = @log
+      ActiveRecord::Base.logger = SysLogger
     end
   end
 
@@ -96,8 +109,8 @@ class MessageGateway
     @name, @backend_endpoint, @dispatchers, @processors = name, backend_endpoint, {}, {}
     self.logger = @@default_logger
     @started_at = Time.new
-    @log = ::Logger.new(File.open('mg.log', File::WRONLY | File::APPEND | File::CREAT))
-    puts "Starting message gateway -- connecting to #{backend_endpoint}"
+
+    MessageGateway::SysLogger.info "Starting message gateway -- connecting to #{backend_endpoint}"
   end
 
 

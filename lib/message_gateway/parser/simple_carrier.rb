@@ -10,9 +10,9 @@ class MessageGateway
 
       def call(env)
         req = Rack::Request.new(env)
-        logger = MessageGateway.default_logger
 
-        logger.error req.inspect
+        MessageGateway::SysLogger.info "the incoming request is:"
+        MessageGateway::SysLogger.info req.inspect
         build_and_dispatch(
           sanitize_phone_number(from_value(req)),
           sanitize_phone_number(to_value(req)) || default_to,
