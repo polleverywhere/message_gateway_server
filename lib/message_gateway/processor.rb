@@ -13,15 +13,15 @@ class MessageGateway
   # by Rack/HttpRouter when a mobile agreegator is relaying a message to us
   class Processor
     include Logging
-    
+
     autoload :Sync,    'message_gateway/processor/sync'
     autoload :Async,   'message_gateway/processor/async'
-    
+
     MAX_ERRORS = 5
     MAX_BUCKETS = 300
 
     attr_accessor :parser_instance, :name, :mo_success_buckets
-    
+
     def init
       @mo_success_buckets = [0]
       EM.add_periodic_timer(5) do
@@ -32,7 +32,11 @@ class MessageGateway
       banner << " (parser -- #{@parser_instance.class})" if @parser_instance
       puts banner
     end
-    
+
+      def tube_name
+        "NOT_A_TUBE"  # override me if you use beanstalk to manage your processor
+      end
+
     def report_success
       @mo_success_buckets[-1] += 1
     end
