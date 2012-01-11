@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency "em-jack"
   s.add_dependency "eventmachine"
   s.add_dependency "builder"
+  s.add_dependency "async_sinatra"
 
   s.add_development_dependency "bundler", "~> 1.0.15"
   s.add_development_dependency "em-spec"
