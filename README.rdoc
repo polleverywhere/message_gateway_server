@@ -44,8 +44,8 @@ In this model, replying with non-empty body to the request from the message gate
 
 In asynchronous processing, the message comes in and uses queues for processing. Here is how it looks:
 
-  Aggreagator       Q        Message Gateway       Q      Your site                                   
-  ===========                ===============              =========
+  Aggregator        Q        Message Gateway       Q      Your site
+  ==========                 ===============              =========
   
   Send msg                        
   from mobile =====>O                                                        
