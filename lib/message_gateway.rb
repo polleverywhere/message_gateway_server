@@ -118,7 +118,7 @@ class MessageGateway
 
     if @logger
       @logger.gateway = self if @logger
-      ActiveRecord::Base.logger = SysLogger
+      #ActiveRecord::Base.logger = SysLogger
     end
   end
 
