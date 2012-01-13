@@ -21,8 +21,8 @@ Receiving messages and sending replies happens over synchronous HTTP. All messag
 
 Message Gateway supports interacting with these aggregators in an synchronous or asynchronous way. In the synchronous model, here is how a message is processed.
 
-  Aggreagator                Message Gateway              Your site                                   
-  ===========                ===============              =========
+  Aggregator                 Message Gateway              Your site
+  ==========                 ===============              =========
 
   Send msg                        
   from mobile ====\                  
