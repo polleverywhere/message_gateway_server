@@ -180,7 +180,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.0.15)
+  bundler (~> 1.0)
   code_stats
   dirge
   em-spec
