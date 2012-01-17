@@ -12,7 +12,7 @@ class MessageGateway
         req = Rack::Request.new(env)
 
         MessageGateway::SysLogger.info "The incoming request: #{req.inspect}"
-        MessageGateway::SysLogger.info "With body:\n#{req.body}"
+        MessageGateway::SysLogger.info "With body:\n#{req.body.read}"
 
         build_and_dispatch(
           sanitize_phone_number(from_value(req)),
