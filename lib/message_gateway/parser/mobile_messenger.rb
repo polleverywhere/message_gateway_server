@@ -88,16 +88,21 @@ class MessageGateway
       add_carrier_mapping  :alltel,                                       '7'
       add_carrier_mapping  :nbtel_mobility,                               '56'
 
+      def carrier_value(req)
+        req.params['carrierId']
+      end
+
       def body_value(req)
-        @prefix ? req.params['message'].gsub(/^#{Regexp.quote(@prefix)} /, '') : req.params['message']
+        body = req.params['content']
+        @prefix ? body.gsub(/^#{Regexp.quote(@prefix)} /, '') : body
       end
 
       def from_value(req)
-        req.params['number']
+        req.params['sender']
       end
 
       def to_value(req)
-        req.params['shortcode']
+        req.params['serviceCode']
       end
     end
   end
