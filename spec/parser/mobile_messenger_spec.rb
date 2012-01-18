@@ -9,7 +9,14 @@ describe MessageGateway::Parser::MobileMessenger do
       parser.processor.name = 'mobile_messsenger'
 
       message_params = 'dialog.message=myguy++toughest+job+might+be+any+head+coaching+job+at+a+top+tier+sec+football+school++no+one+remembers+a+national+title+two+years+later++thanks%2C+Eric&serviceCode=22333&dialog.carrier_id=4&senderState=NotAvailable&sender=6145076621&carrierId=4&content=myguy++toughest+job+might+be+any+head+coaching+job+at+a+top+tier+sec+football+school++no+one+remembers+a+national+title+two+years+later++thanks%2C+Eric&dialog.service_code=22333&dialog.umda=tel%3A6145076621&messageId=07n9g8i1me4j8021m2usb6b9qsnd&senderCity=NotAvailable'
-      @message = parser.call Rack::MockRequest.env_for "/?#{message_params}"
+      test_req = Rack::MockRequest.env_for( "/",  #?#{message_params}"
+        :input => message_params,
+        "REQUEST_METHOD" => "POST")
+
+      @message = parser.call test_req
+      require 'ruby-debug'
+      debugger
+      @message.should_not be_nil
     end
 
     it "has the supplied body" do
