@@ -14,8 +14,6 @@ describe MessageGateway::Parser::MobileMessenger do
         "REQUEST_METHOD" => "POST")
 
       @message = parser.call test_req
-      require 'ruby-debug'
-      debugger
       @message.should_not be_nil
     end
 

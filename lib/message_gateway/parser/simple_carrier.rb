@@ -15,6 +15,7 @@ class MessageGateway
         unless (request_body = req.body.read rescue '').empty?
           MessageGateway::SysLogger.info request_body
         end
+        req.body.rewind
 
         build_and_dispatch(
           sanitize_phone_number(from_value(req)),
