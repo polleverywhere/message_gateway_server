@@ -57,7 +57,7 @@ class MessageGateway
           # now, shove that normalized message into the outbound message queue and
           # send a message back to the MA. This lets us get BACK TO WORK (responding to messages)
 
-          @beanstalk_producer_client.put(message.to_hash.to_json) {
+          @beanstalk_producer_client.put({'message' => message.to_hash}.to_json) {
             response.status = 200
             response << 'OK'
             response.done
@@ -77,7 +77,8 @@ class MessageGateway
       def run
         @beanstalk_consumer_client.reserve do |job|
           @job = job
-          process(Message.from_hash(JSON.parse(job.body)), 0, job)
+          message_hash = JSON.parse(job.body)['message']
+          process(Message.from_hash(message_hash), 0, job)
         end
       end
 
