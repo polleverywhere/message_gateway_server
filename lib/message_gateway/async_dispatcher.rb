@@ -55,6 +55,8 @@ class MessageGateway
     # It calls the MessageGateway::Sender subclass (which you specified to the MessageGateway object)
     def process
       @beanstalk_connection.reserve do |job|
+        MessageGateway::SysLogger "Parsing job: #{job.body}"
+
         parsed_job = JSON.parse(job.body)
         parsed_job['attempts'] ||= 0
         begin
