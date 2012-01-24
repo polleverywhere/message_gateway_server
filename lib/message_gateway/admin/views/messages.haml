@@ -13,7 +13,7 @@
       %option(value="")
         #{"----"}
       -@gateway.logger.statuses.each do |status|
-        <option value="#{status}"#{" selected" if status == params[:status]}>#{status}</option
+        <option value="#{status}"#{" selected" if status == params[:status]}>#{status}</option>
 
   %p
     Filter by source
@@ -21,7 +21,7 @@
       %option(value="")
         #{"----"}
       -@gateway.logger.sources.each do |source|
-        <option value="#{source}"#{" selected" if source == params[:source]}>#{source}</option
+        <option value="#{source}"#{" selected" if source == params[:source]}>#{source}</option>
   %input(type="submit")
   %input(name="reply" value="Replay these messages" type="submit")
 
