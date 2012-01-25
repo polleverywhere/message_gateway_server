@@ -62,9 +62,8 @@ class MessageGateway
       @sources << message.source unless @sources.include?(message.source)
       state = State.record_status(message, status.to_s, err)
     rescue
-     "#{$!.message}\n#{$!.backtrace.join("\n")}"
-      MessageGateway::SysLogger.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
-
+     msg = "Error recording status: #{$!.message}\n#{$!.backtrace.join("\n  ")}"
+      MessageGateway::SysLogger.error msg
     ensure
       state
     end

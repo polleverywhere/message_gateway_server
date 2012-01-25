@@ -51,7 +51,7 @@ class MessageGateway
     end
 
 
-    # AsyncDispatcher#process takes Messages that have been serialized to JSON and put on the Beanstalk queue
+    # AsyncDispatcher#process takes JSON serialized Messages from the Beanstalk queue
     # It calls the MessageGateway::Sender subclass (which you specified to the MessageGateway object)
     def process
       @beanstalk_connection.reserve do |job|
@@ -64,8 +64,7 @@ class MessageGateway
             # things on the beanstalk queue should always have a message param
             # - what's wrong with this one? Send it to the logger for a human to check...
 
-            MessageGateway::SysLogger.error "beanstalk item did not have message key. Item follows"
-            MessageGateway::SysLogger.error parsed_job.inspect
+            MessageGateway::SysLogger.error "beanstalk item did not have message key. #{parsed_job.inspect}"
             raise Message::BadParameter
           end
 
@@ -81,7 +80,7 @@ class MessageGateway
               }
             end
             send.errback { |err|
-              MessageGateway::SysLogger.error err
+              MessageGateway::SysLogger.error "Failure to send processed message: #{err}"
               log_mt_failure(message, err)
               retry_job(job, parsed_job, message)
             }

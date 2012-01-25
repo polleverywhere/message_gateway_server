@@ -76,7 +76,7 @@ class MessageGateway
         end
       end
     rescue
-      MessageGateway::SysLogger.error "#{$!.message}\n#{$!.backtrace.join("\n  ")}"
+      MessageGateway::SysLogger.error "SmsSendingEndpoint#call error: #{$!.message}\n#{$!.backtrace.join("\n  ")}"
       Rack::Response.new(['MEASSAGE GATEWAY: There was a problem'], 500).finish
     end
   end

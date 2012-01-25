@@ -10,10 +10,9 @@ class MessageGateway
 
       def call(env)
         req = Rack::Request.new(env)
-
-        MessageGateway::SysLogger.info "The incoming request: #{req.inspect}"
         unless (request_body = req.body.read rescue '').empty?
-          MessageGateway::SysLogger.info request_body
+          msg = "The incoming request: #{req.inspect} with body: #{request_body}"
+          MessageGateway::SysLogger.info msg
         end
         req.body.rewind
 
