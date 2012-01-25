@@ -19,7 +19,7 @@ class MessageGateway
 
     def get(sender_subclass, send_url, get_params)
       defer_success_sym = sender_subclass.defer_callback_method
-      sender_subclass.__send__(defer_success_sym, EM::HttpRequest.new(send_url).get(post_params) )
+      sender_subclass.__send__(defer_success_sym, EM::HttpRequest.new(send_url).get(get_params) )
     end
   end
 end
