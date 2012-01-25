@@ -28,6 +28,8 @@ class MessageGateway
 
       include WillPaginate::Sinatra::Helpers
 
+      include Rack::Utils
+      alias_method :h, :escape_html
 
       use MessageGateway::Middleware::KeepDbConnectionAlive
 
