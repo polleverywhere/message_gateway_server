@@ -30,12 +30,12 @@ class MessageGateway
       def self.record_status(message, status, err = nil)
         state = message.id ? find(message.id) : State.new
         if state.new_record?
-          state.body = message.body
-          state.to = message.to
-          state.from = message.from
-          state.source = message.source
+          state.body        = message.body
+          state.to          = message.to
+          state.from        = message.from
+          state.source      = message.source
           state.reply_to_id = message.in_reply_to if message.in_reply_to
-          state.extra = message.extra && message.extra.to_json
+          state.extra       = message.extra && message.extra.to_json
         end
         MessageGateway::SysLogger.info "Recording status \"#{status}\" for message: #{message.inspect}"
         state.update_status(message, status, err)
