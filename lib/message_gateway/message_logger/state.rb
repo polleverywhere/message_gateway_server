@@ -36,7 +36,6 @@ class MessageGateway
           state.source = message.source
           state.reply_to_id = message.in_reply_to if message.in_reply_to
           state.extra = message.extra && message.extra.to_json
-          state.carrier_id = message.carrier_id if message.respond_to?(:carrier_id)
         end
         MessageGateway::SysLogger.info "Recording status \"#{status}\" for message: #{message.inspect}"
         state.update_status(message, status, err)
