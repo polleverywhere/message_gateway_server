@@ -2,11 +2,18 @@
   ="Processor #{@processor.name.capitalize}"
 
 %p
-  Jobs waiting to be processed on the beanstalk tube: <strong>#{@processor.waiting_jobs}</strong>. (Total jobs: #{@total_jobs}).
+  Jobs waiting to be processed on the beanstalk tube:
+  <strong>#{@processor.waiting_jobs}</strong>
+  . (Total jobs: #{@total_jobs}).
 
 -if @processor.parser_instance
   %p
-    Parsing with <strong>#{@processor.parser_instance.class}</strong> which reports it's successfully processed <span style="background-color:green">#{@processor.parser_instance.success_count}</span> messages and unsuccessfully processed <span style="background-color:red">#{@processor.parser_instance.failure_count}</span> messages.
+    Parsing with <strong>#{@processor.parser_instance.class}</strong> which
+    reports it's successfully processed
+    <span style="background-color:green">#{@processor.parser_instance.success_count}</span>
+    messages and unsuccessfully processed
+    <span style="background-color:red">#{@processor.parser_instance.failure_count}</span>
+    messages.
 -else
   %p
     This processor has no parser.

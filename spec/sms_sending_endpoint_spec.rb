@@ -25,7 +25,14 @@ describe MessageGateway::SmsSendingEndpoint do
           defer
         }, 'test')
         @gateway.dispatchers['test'].success_count.should == 0
-        response = @gateway.sms_sending_endpoint.call(Rack::MockRequest.env_for("/?#{Rack::Utils.build_query('to' => '123456', 'from' => '41411', 'body' => 'Thank you for your vote(s).', 'source' => 'test')}"))
+        mock_req_qs = Rack::Utils.build_query(
+          'to'     => '123456',
+          'from'   => '41411',
+          'body'   => 'Thank you for your vote(s).',
+          'source' => 'test'
+        )
+        mock_req = Rack::MockRequest.env_for("/?#{mock_req_qs}")
+        response = @gateway.sms_sending_endpoint.call(mock_req)
         response.first.should == 200
         EM.add_timer(0.2) {
           @gateway.dispatchers['test'].success_count.should == 1
