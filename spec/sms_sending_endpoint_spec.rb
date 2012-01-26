@@ -16,9 +16,9 @@ describe MessageGateway::SmsSendingEndpoint do
         @gateway = start_gateway
         @gateway.beanstalk('127.0.0.1')
         @gateway.outbound(create_sender{|message|
-          message.from.should == '41411'
-          message.to.should == '123456'
-          message.body.should == 'Thank you for your vote(s).'
+          message.from.should   == '41411'
+          message.to.should     == '123456'
+          message.body.should   == 'Thank you for your vote(s).'
           message.source.should == 'test'
           defer = EM::DefaultDeferrable.new
           defer.succeed
