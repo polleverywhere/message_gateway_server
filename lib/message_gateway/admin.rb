@@ -124,21 +124,29 @@ class MessageGateway
 
       aget '/processor/:name' do |name|
         @processor = @gateway.processors[name] or raise
-        @events = MessageLogger::Event.find_by_sql(["select events.* from events, states where events.state_id = states.id and states.source = ? order by events.id desc limit 30", name])
+        
+        sql = <<-SQL
+          select     events.*
+          from       events
+          inner join states on events.state_id = states.id
+          where      states.source = ?
+          order by   events.id desc
+          limit      30
+        SQL
+        @events = MessageLogger::Event.find_by_sql [sql, name]
 
-        jack = EMJack::Connection.new(:host => @gateway.beanstalk_host)
+        jack = EMJack::Connection.new :host => @gateway.beanstalk_host
+        r = jack.stats :tube, @processor.tube_name
 
-        r = jack.stats(:tube, @processor.tube_name)
-        r.callback {|stats|
+        r.callback do |stats|
           @total_jobs = stats["total-jobs"]
           body {haml :processor}
-        }
+        end
 
-        r.errback {|err|
+        r.errback do |err|
           @total_jobs = "(error: #{err})"
           body {haml :processor}
-        }
-        #haml :processor
+        end
       end
 
       get '/dispatcher/:name' do |name|
