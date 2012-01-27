@@ -52,7 +52,9 @@ class MessageGateway
 
     def build_and_dispatch(from, to, body)
       if from.empty? || to.empty? || body.empty?
-        log.error "Unable to build and dispatch message: #{from.inspect} #{to.inspect} #{body.inspect}"
+        err_base = "Unable to build and dispatch message: "
+        vals = [from, to, body].map{ |v| v.inspect }.join ' '
+        MessageGateway::SysLogger.error "#{err_base} #{vals}"
         report_failure
         nil
       else
@@ -62,7 +64,8 @@ class MessageGateway
         message
       end
     rescue
-      log.error "#{$!.message}\n#{$!.backtrace.join("\n")}"
+      msg_and_backtrace = "#{$!.message}\n#{$!.backtrace.join("\n")}"
+      MessageGateway::SysLogger.error "build_and_dispatch rescue: #{msg_and_backtrace}"
     end
   end
 end
