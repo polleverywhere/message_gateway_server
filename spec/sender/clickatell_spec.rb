@@ -3,9 +3,10 @@ require 'dirge'
 
 describe MessageGateway::Sender::Clickatell do
   before :each do
-    stub_request(:any,
-      "http://api.clickatell.com:80/http/sendmsg?mo=1&api_id=api_id&from=from&text=body&to=to&password=password&user=login")
-      .to_return(:body => file_obj_for('processor/fixtures/twitter/send.txt'))
+    stub_request(
+      :any,
+      "http://api.clickatell.com:80/http/sendmsg?mo=1&api_id=api_id&from=from&text=body&to=to&password=password&user=login"
+    ).to_return :body => file_obj_for('processor/fixtures/twitter/send.txt')
 
     @sender = MessageGateway::Sender::Clickatell.new
     @sender.init
