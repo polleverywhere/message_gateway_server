@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'ruby-debug'
 
 # RSpec 2.0
 require 'rspec/core/rake_task'
