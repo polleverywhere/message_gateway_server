@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "padrino", "= 0.10.1"
   s.add_dependency "sinatra", "~> 1.2.6"
 
-  s.add_dependency "rack", '~> 1.1'
+  s.add_dependency "rack", '>= 1.1', '< 3.0'
   s.add_dependency "chirpstream"
   s.add_dependency "nokogiri"
   s.add_dependency "em-http-request", "~> 1.0.0"
