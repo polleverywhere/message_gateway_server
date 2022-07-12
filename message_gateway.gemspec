@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "tumbler"
 
-  s.add_dependency "activerecord", '~> 3.0.9'
+  s.add_dependency "activerecord", '>= 3.0.9', '< 7.1.0'
   s.add_dependency 'yajl-ruby', ">= 0.7.5"
   s.add_dependency 'oauth', ">= 0.4.2"
   s.add_dependency "json"
