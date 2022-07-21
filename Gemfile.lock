@@ -153,7 +153,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.31)
+    tzinfo (0.3.61)
     url_mount (0.2.1)
       rack
     webmock (1.7.8)
